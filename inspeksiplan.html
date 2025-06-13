@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Form Pemeriksaan Part</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    table input, table select, table textarea {
+      width: 100%;
+      padding: 4px;
+    }
+    .table th, .table td {
+      vertical-align: middle;
+      text-align: center;
+    }
+  </style>
+
+  <style>
+  #preview img,
+  #preview video {
+    width: 120px;
+    height: auto;
+    margin-top: 30px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+  }
+
+
+   body {
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+    }
+
+    .sidebar {
+      width: 250px;
+      height: 100vh;
+      background: linear-gradient(to bottom, #0066ff, #00ccff);
+      color: white;
+      padding: 20px;
+      flex-shrink: 0;
+    }
+
+    .sidebar a {
+      color: white !important;
+    }
+
+    .sidebar .nav-link.active {
+      background-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .main-content {
+      flex-grow: 1;
+      overflow-y: auto;
+      padding: 20px;
+      background-color: #f8f9fa;
+    }
+
+
+</style>
+
+
+<style>
+  .image-preview img {
+    width: 80px;
+    height: auto;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-top: 4px;
+  }
+</style>
+
+
+
+</head>
+<body>
+<div class="container mt-4">
+  <h4 class="mb-4">Form Pemeriksaan Dimensi Part</h4>
+  <form>
+    <!-- Informasi Umum -->
+
+
+    <div class="row mb-3">
+  <div class="col-md-4">
+    <label for="tagNumber" class="form-label">Tag Number</label>
+    <select class="form-select" id="tagNumber">
+      <option selected disabled>Pilih Tag Number</option>
+      <option value="TAG001">TAG001</option>
+      <option value="TAG002">TAG002</option>
+      <option value="TAG003">TAG003</option>
+      <!-- Tambahkan lagi sesuai kebutuhan -->
+    </select>
+  </div>
+  <div class="col-md-4">
+    <label for="area" class="form-label">Area</label>
+    <select class="form-select" id="area">
+      <option selected disabled>Pilih Area</option>
+      <option value="Area 1">Area 1</option>
+      <option value="Area 2">Area 2</option>
+      <option value="Area 3">Area 3</option>
+      <!-- Tambahkan lagi sesuai kebutuhan -->
+    </select>
+  </div>
+  <div class="col-md-4">
+    <label for="unit" class="form-label">Unit</label>
+    <select class="form-select" id="unit">
+      <option selected disabled>Pilih Unit</option>
+      <option value="Unit A">Unit A</option>
+      <option value="Unit B">Unit B</option>
+      <option value="Unit C">Unit C</option>
+      <!-- Tambahkan lagi sesuai kebutuhan -->
+    </select>
+  </div>
+</div>
+
+
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <label for="typeEquipment" class="form-label">Type Equipment (Catalog Profile)</label>
+        <input type="text" class="form-control" id="typeEquipment">
+      </div>
+      <div class="col-md-6">
+        <label for="tanggal" class="form-label">Tanggal</label>
+        <input type="date" class="form-control" id="tanggal">
+      </div>
+    </div>
+
+    <div class="p-2 shadow shadow" style="border-radius: 12px;">
+
+    <!-- Upload dan Dropdown -->
+    <div class="row mb-3">
+<div class="col-md-6 d-flex align-items-start">
+  <div class="w-100 me-3">
+    <label for="gambar" class="form-label">Gambar/Video Posisi Point Pengukuran</label>
+    <input type="file" class="form-control" id="gambar" accept="image/*,video/*">
+  </div>
+  <div id="preview"></div>
+</div>
+
+
+
+<script>
+  document.getElementById('gambar').addEventListener('change', function (event) {
+    const preview = document.getElementById('preview');
+    preview.innerHTML = ''; // Kosongkan preview sebelumnya
+
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const fileType = file.type;
+
+    const url = URL.createObjectURL(file);
+
+    if (fileType.startsWith('image/')) {
+      const img = document.createElement('img');
+      img.src = url;
+      preview.appendChild(img);
+    } else if (fileType.startsWith('video/')) {
+      const video = document.createElement('video');
+      video.src = url;
+      video.controls = true;
+      video.width = 120;
+      preview.appendChild(video);
+    }
+  });
+</script>
+
+
+
+      <div class="col-md-6">
+        <label for="partList" class="form-label">Part List</label>
+        <select class="form-select" id="partList">
+          <option selected disabled>Pilih Part</option>
+          <option value="part1">Part 1</option>
+          <option value="part2">Part 2</option>
+        </select>
+        <div class="mt-2">
+          <button type="button" class="btn btn-sm btn-secondary">Previous</button>
+          <button type="button" class="btn btn-sm btn-secondary">Next</button>
+          <button type="button" class="btn btn-sm btn-primary">Add New Part</button>
+        </div>
+      </div>
+    </div>
+
+    </div>
+
+    <br>
+
+    <!-- Tabel Part -->
+    <div class="table-responsive mb-3">
+      <table class="table table-bordered align-middle" id="partTable">
+        <thead class="table-light text-center">
+          <tr>
+            <th>Photo</th>
+            <th>Measured Dimension<br><small>(3 angka di belakang koma)</small></th>
+            <th>Findings</th>
+            <th>Actions</th>
+            <th>Notes</th>
+            <th>Remove</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="d-flex align-items-start">
+  <div class="me-2" style="flex: 1;">
+    <input type="file" accept="image/*" class="form-control image-input">
+  </div>
+  <div class="image-preview"></div>
+</td>
+
+
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('.image-input').forEach(input => {
+      input.addEventListener('change', function (event) {
+        const previewContainer = this.closest('td').querySelector('.image-preview');
+        previewContainer.innerHTML = ''; // Bersihkan preview sebelumnya
+
+        const file = this.files[0];
+        if (file && file.type.startsWith('image/')) {
+          const img = document.createElement('img');
+          img.src = URL.createObjectURL(file);
+          previewContainer.appendChild(img);
+        }
+      });
+    });
+  });
+</script>
+
+
+
+     <td>
+  <div class="row gx-2">
+    <div class="col">
+      <label class="form-label small">Horizontal (mm)</label>
+      <input type="number" step="0.001" class="form-control" placeholder="Contoh: 12.345">
+    </div>
+    <div class="col">
+      <label class="form-label small">Vertical (mm)</label>
+      <input type="number" step="0.001" class="form-control" placeholder="Contoh: 12.345">
+    </div>
+  </div>
+</td>
+
+            <td>
+              <select class="form-select">
+                <option selected disabled>Pilih</option>
+                <option value="ok">OK</option>
+                <option value="not_ok">Not OK</option>
+                <option value="repair">Perlu Repair</option>
+              </select>
+            </td>
+            <td>
+              <select class="form-select">
+                <option selected disabled>Pilih</option>
+                <option value="reuse">Reuse</option>
+                <option value="replace">Replace</option>
+                <option value="monitor">Monitor</option>
+              </select>
+            </td>
+            <td><textarea class="form-control" rows="2" placeholder="Catatan tambahan..."></textarea></td>
+            <td><button type="button" class="btn btn-danger btn-sm" onclick="removeRow(this)">X</button></td>
+          </tr>
+        </tbody>
+      </table>
+      <button type="button" class="btn btn-outline-primary" onclick="addRow()">+ Tambah Baris</button>
+    </div>
+
+    <!-- Tombol Simpan -->
+    <div class="d-flex justify-content-end">
+      <button type="submit" class="btn btn-success me-2">Save</button>
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </div>
+  </form>
+</div>
+
+<!-- JavaScript -->
+<script>
+  function addRow() {
+    const table = document.getElementById("partTable").getElementsByTagName('tbody')[0];
+    const newRow = table.rows[0].cloneNode(true);
+
+    // Bersihkan nilai input
+    const inputs = newRow.querySelectorAll("input, textarea, select");
+    inputs.forEach(input => {
+      if (input.type === "file") {
+        input.value = "";
+      } else {
+        input.value = "";
+        input.selectedIndex = 0;
+      }
+    });
+
+    table.appendChild(newRow);
+  }
+
+  function removeRow(button) {
+    const row = button.closest("tr");
+    const table = document.getElementById("partTable").getElementsByTagName('tbody')[0];
+    if (table.rows.length > 1) {
+      row.remove();
+    } else {
+      alert("Minimal satu baris harus ada.");
+    }
+  }
+</script>
+</body>
+</html>

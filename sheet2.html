@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QUALITY CONTROL RECORD</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <style>
+        .category-row {
+            background-color: #d4e6f1 !important;
+            font-weight: bold;
+        }
+        .status-cell {
+            min-width: 150px;
+        }
+        .action-buttons {
+            white-space: nowrap;
+        }
+        .table-container {
+            margin: 20px;
+            overflow-x: auto;
+        }
+        .header-title {
+            text-align: center;
+            margin: 20px 0;
+            font-weight: bold;
+        }
+        .footer-buttons {
+            margin-top: 20px;
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+        .checkmark {
+            color: green;
+            font-size: 1.2em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <h2 >QUALITY CONTROL RECORD</h2>
+        
+        <div class="table-container">
+            <table class="table table-bordered">
+                <thead class="table-dark">
+                    <tr>
+                        <th style="width: 50px;">NO</th>
+                        <th>ACTIVITY</th>
+                        <th>REFERENCE/ CODE STANDARD</th>
+                        <th>ACCEPTANCE CRITERIA</th>
+                        <th style="width: 80px;">MA</th>
+                        <th style="width: 80px;">Role</th>
+                        <th class="status-cell">STATUS</th>
+                        <th class="status-cell">KETERANGAN</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Category 1 -->
+                    <tr class="category-row">
+                        <td>1</td>
+                        <td colspan="5"><strong>Pekerjaan Persiapan</strong></td>
+                        <td>
+                      
+                        </td>
+                    </tr>
+                    <!-- Item 1a -->
+                    <tr>
+                        <td>a</td>
+                        <td>Persiapan tools & perizinan</td>
+                        <td>Manual book</td>
+                        <td>Sesuai lingkup kerja</td>
+                        <td>-</td>
+                        <td><i class="bi bi-check-circle-fill checkmark"></i></td>
+                        <td>
+                            <select class="form-select form-select-sm status-cell">
+                                <option value="">Select Status</option>
+                                <option value="terlaksana">Terlaksana</option>
+                                <option value="tidak" selected>Tidak Terlaksana</option>
+                            </select>
+                        </td>
+
+                        <td>
+                            <input type="text" class="form-control">
+                        </td>
+                    </tr>
+                    <!-- Item 1b -->
+                    <tr>
+                        <td>b</td>
+                        <td>Pemeriksaan material overhaul</td>
+                        <td>PO & Manual book</td>
+                        <td>Sesuai PO</td>
+                        <td>A</td>
+                        <td><i class="bi bi-check-circle-fill checkmark"></i></td>
+                        <td>
+                            <select class="form-select form-select-sm status-cell">
+                                <option value="">Select Status</option>
+                                <option value="terlaksana" selected>Terlaksana</option>
+                                <option value="tidak">Tidak Terlaksana</option>
+                            </select>
+                        </td>
+                          <td>
+                            <input type="text" class="form-control">
+                        </td>
+                    </tr>
+                    
+                    <!-- Category 2 -->
+                    <tr class="category-row">
+                        <td>2</td>
+                        <td colspan="5"><strong>Pekerjaan Pembongkaran</strong></td>
+                        <td>
+                      
+                        </td>
+                    </tr>
+                    <!-- Item 2a -->
+                    <tr>
+                        <td>a</td>
+                        <td>Stop EST, running aux. tube oil</td>
+                        <td>Manual book</td>
+                        <td>Temperatur quadrant &lt;120°C</td>
+                        <td>S</td>
+                        <td><i class="bi bi-check-circle-fill checkmark"></i></td>
+                        <td>
+                            <select class="form-select form-select-sm status-cell">
+                                <option value="">Select Status</option>
+                                <option value="terlaksana" selected>Terlaksana</option>
+                                <option value="tidak">Tidak Terlaksana</option>
+                            </select>
+                        </td>
+                          <td>
+                            <input type="text" class="form-control">
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="footer-buttons">
+    
+            <button class="btn btn-success">
+                SUBMIT
+            </button>
+            <button class="btn btn-warning">
+                APPROVE
+            </button>
+            <button class="btn btn-info">
+                CETAK
+            </button>
+        </div>
+    </div>
+
+
+
+
+    
+
+
+
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <style>
+        .document-preview {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .upload-container {
+            display: none;
+            margin-top: 10px;
+            padding: 10px;
+            border: 1px dashed #ccc;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+        .upload-row {
+            display: flex;
+            align-items: flex-end;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        .form-compact {
+            margin-bottom: 0;
+        }
+        .form-compact .form-label {
+            font-size: 0.85rem;
+            margin-bottom: 0.2rem;
+        }
+        .form-compact .form-control {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.85rem;
+            height: calc(1.5em + 0.5rem + 2px);
+        }
+        .btn-compact {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.85rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-4">
+        <div class="card">
+            <div class="card-header  text-white">
+               
+            </div>
+            <div class="card-body">
+                <form id="ncrForm">
+                    <!-- Basic Information -->
+    
+
+                    <!-- Non-Conformance Section -->
+                    <div class="mb-3">
+                        <h5>Non-Conformance</h5>
+                        <div class="form-check mb-2">
+                            <input class="form-check-input" type="checkbox" id="nonConformityCheck">
+                            <label class="form-check-label" for="nonConformityCheck">
+                                Add Non-Conformity
+                            </label>
+                        </div>
+                        <div id="nonConformityContainer" class="upload-container">
+                            <div class="upload-row">
+                                <div class="form-compact flex-grow-1">
+                                    <label class="form-label">Description</label>
+                                    <input type="text" class="form-control" placeholder="Non-conformity description">
+                                </div>
+                                <div class="form-compact" style="width: 180px;">
+                                    <label class="form-label">Upload Evidence</label>
+                                    <input type="file" class="form-control" accept="image/*,.pdf">
+                                </div>
+                                <div class="form-compact">
+                                    <button type="button" class="btn btn-sm btn-secondary btn-compact">
+                                        <i class="bi bi-plus"></i> Add
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Attachments Section -->
+                    <div class="mb-3">
+                        <h5>Attachments</h5>
+                        <div class="form-check mb-2">
+                            <input class="form-check-input" type="checkbox" id="attachmentCheck">
+                            <label class="form-check-label" for="attachmentCheck">
+                                Add Attachment
+                            </label>
+                        </div>
+                        <div id="attachmentContainer" class="upload-container">
+                            <div class="upload-row">
+                                <div class="form-compact" style="width: 400px;">
+                                    <label class="form-label">Document Title</label>
+                                    <input type="text" class="form-control" placeholder="Document title">
+                                </div>
+                                <div class="form-compact" style="width: 300px;">
+                                    <label class="form-label">Upload Document</label>
+                                    <input type="file" class="form-control" accept="image/*,.pdf">
+                                </div>
+                                <div class="form-compact">
+                                    <button type="button" class="btn btn-sm btn-secondary btn-compact">
+                                        <i class="bi bi-plus"></i> Add
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                 
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS Bundle with Popper -->
+
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Toggle containers when checkboxes are clicked
+            document.getElementById('nonConformityCheck').addEventListener('change', function() {
+                document.getElementById('nonConformityContainer').style.display = this.checked ? 'block' : 'none';
+            });
+            
+            document.getElementById('attachmentCheck').addEventListener('change', function() {
+                document.getElementById('attachmentContainer').style.display = this.checked ? 'block' : 'none';
+            });
+
+            // Form submission
+            document.getElementById('ncrForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                alert('Form submitted successfully!');
+                // Here you would typically send the form data to a server
+            });
+        });
+    </script>
+
+
+
+
+
+
+
+
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

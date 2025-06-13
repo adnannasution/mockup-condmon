@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>List Dokumen</title>
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <!-- DataTables CSS -->
+  <link href="https://cdn.datatables.net/1.13.5/css/jquery.dataTables.min.css" rel="stylesheet" />
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+  <div class="container">
+    <a class="navbar-brand" href="index.html">Manajemen Dokumen</a>
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarNav"
+      aria-controls="navbarNav"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item">
+          <a
+            class="nav-link"
+            href="index.html"
+            aria-current="page"
+            >Home</a
+          >
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="list.html?category=Semua Kategori"
+            >List Dokumen</a
+          >
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+
+  <div class="container my-5">
+    <h1 class="mb-4" id="categoryTitle">Daftar Dokumen</h1>
+
+
+
+        
+    <div class="mb-3 d-flex justify-content-between align-items-center">
+      <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addDocModal">Tambah Dokumen</button>
+
+    </div>
+
+
+
+    <form class="row row-cols-1 row-cols-md-auto g-2 align-items-end mb-4">
+  <!-- Dropdown Area -->
+  <div class="col">
+    <label for="areaSelect" class="form-label">Area</label>
+    <select class="form-select" id="areaSelect">
+      <option selected disabled>Pilih Area</option>
+      <option value="Area1">Area 1</option>
+      <option value="Area2">Area 2</option>
+      <option value="Area3">Area 3</option>
+    </select>
+  </div>
+
+  <!-- Dropdown Unit -->
+  <div class="col">
+    <label for="unitSelect" class="form-label">Unit</label>
+    <select class="form-select" id="unitSelect">
+      <option selected disabled>Pilih Unit</option>
+      <option value="UnitA">Unit A</option>
+      <option value="UnitB">Unit B</option>
+      <option value="UnitC">Unit C</option>
+    </select>
+  </div>
+
+  <!-- Dropdown Tag Number -->
+  <div class="col">
+    <label for="tagSelect" class="form-label">Tag Number</label>
+    <select class="form-select" id="tagSelect">
+      <option selected disabled>Pilih Tag Number</option>
+      <option value="TAG001">TAG001</option>
+      <option value="TAG002">TAG002</option>
+      <option value="TAG003">TAG003</option>
+    </select>
+  </div>
+
+  <!-- Tombol Search -->
+  <div class="col">
+    <button type="submit" class="btn btn-primary w-100">
+      <i class="bi bi-search"></i> Cari
+    </button>
+  </div>
+</form>
+
+
+
+    <!-- Tabs Navigation -->
+<ul class="nav nav-tabs mb-4" id="documentTabs" role="tablist">
+  <li class="nav-item" role="presentation">
+    <button class="nav-link active" id="drawing-tab" data-bs-toggle="tab" data-bs-target="#drawing" type="button" role="tab">Drawing & Datasheet</button>
+  </li>
+  <li class="nav-item" role="presentation">
+    <button class="nav-link" id="memo-tab" data-bs-toggle="tab" data-bs-target="#memo" type="button" role="tab">Rekomendasi</button>
+  </li>
+  <li class="nav-item" role="presentation">
+    <button class="nav-link" id="quotation-tab" data-bs-toggle="tab" data-bs-target="#quotation" type="button" role="tab">Quotation/Kimap/PR/PO</button>
+  </li>
+  <li class="nav-item" role="presentation">
+    <button class="nav-link" id="kajian-tab" data-bs-toggle="tab" data-bs-target="#kajian" type="button" role="tab">Kajian/Laporan/Logbook</button>
+  </li>
+  <li class="nav-item" role="presentation">
+    <button class="nav-link" id="dokumentasi-tab" data-bs-toggle="tab" data-bs-target="#dokumentasi" type="button" role="tab">Dokumentasi</button>
+  </li>
+  <li class="nav-item" role="presentation">
+    <button class="nav-link" id="qpqcr-tab" data-bs-toggle="tab" data-bs-target="#qpqcr" type="button" role="tab">QP-QCR</button>
+  </li>
+
+  
+</ul>
+
+
+
+    <table id="docTable" class="display table table-striped" style="width:100%">
+      <thead>
+        <tr>
+          <th>Judul</th>
+          <th>Kategori</th>
+          <th>Tag Number</th>
+          <th>Nama File</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Data akan diisi JS -->
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Modal Add Dokumen -->
+  <div
+    class="modal fade"
+    id="addDocModal"
+    tabindex="-1"
+    aria-labelledby="addDocModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog">
+      <form id="addDocForm" class="modal-content" enctype="multipart/form-data">
+        <div class="modal-header">
+          <h5 class="modal-title" id="addDocModalLabel">Tambah Dokumen Baru</h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label for="docTitle" class="form-label">Judul Dokumen</label>
+            <input type="text" id="docTitle" class="form-control" required />
+          </div>
+          <div class="mb-3">
+            <label for="docCategory" class="form-label">Kategori</label>
+          <select id="docCategory" class="form-select" required>
+  <option value="" disabled selected>Pilih Kategori</option>
+  <option value="Drawing dan Datasheet">Drawing dan Datasheet</option>
+  <option value="Memo">Rekomendasi</option>
+  <option value="Quotation/Kimap/PR/PO">Quotation/Kimap/PR/PO</option>
+  <option value="Kajian/Laporan/Logbook">Kajian/Laporan/Logbook</option>
+  <option value="Dokumentasi">Dokumentasi</option>
+  <option value="QP-QCR">QP-QCR</option>
+</select>
+
+          </div>
+          <div class="mb-3">
+            <label for="tagNumber" class="form-label">Tag Number</label>
+            <input type="text" id="tagNumber" class="form-control" placeholder="Masukkan Tag Number" required />
+          </div>
+          <div class="mb-3">
+            <label for="docFile" class="form-label">Pilih File Dokumen</label>
+            <input type="file" id="docFile" class="form-control" required />
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary">Simpan Dokumen</button>
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+          >
+            Batal
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- jQuery -->
+  <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+  <!-- Bootstrap Bundle -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- DataTables JS -->
+  <script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
+
+  <script>
+    // Ambil parameter kategori dari URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const selectedCategory = urlParams.get('category') || 'Semua Kategori';
+
+    // Set judul halaman sesuai kategori
+    document.getElementById('categoryTitle').textContent = 'Daftar Dokumen: ' + selectedCategory;
+
+    let documents = [];
+
+    // Init DataTable
+    let table;
+
+    $(document).ready(function () {
+      table = $('#docTable').DataTable({
+        data: [],
+        columns: [
+          { data: 'title' },
+          { data: 'category' },
+          { data: 'tagNumber' },
+          { data: 'fileName' },
+        ],
+        pageLength: 5,
+      });
+
+      // Filter berdasarkan input tag number
+      $('#searchTag').on('keyup', function () {
+        table.column(2).search(this.value).draw();
+      });
+
+      // Modal form submit
+      $('#addDocForm').on('submit', function (e) {
+        e.preventDefault();
+
+        const title = $('#docTitle').val().trim();
+        const category = $('#docCategory').val();
+        const tagNumber = $('#tagNumber').val().trim();
+        const fileInput = $('#docFile')[0];
+        const file = fileInput.files[0];
+
+        if (!title || !category || !tagNumber || !file) {
+          alert('Semua field harus diisi!');
+          return;
+        }
+
+        // Tambah data dokumen ke array
+        documents.push({
+          title,
+          category,
+          tagNumber,
+          fileName: file.name,
+        });
+
+        // Jika ada filter kategori, simpan hanya dokumen kategori tersebut saja
+        // Render ulang data table hanya dokumen kategori yang sesuai
+        renderTable(selectedCategory);
+
+        // Reset form dan tutup modal
+        this.reset();
+        const modal = bootstrap.Modal.getInstance(document.getElementById('addDocModal'));
+        modal.hide();
+      });
+    });
+
+    function renderTable(category) {
+      let dataToShow = documents;
+      if (category && category !== 'Semua Kategori') {
+        dataToShow = documents.filter(doc => doc.category === category);
+      }
+      table.clear();
+      table.rows.add(dataToShow);
+      table.draw();
+    }
+  </script>
+</body>
+</html>

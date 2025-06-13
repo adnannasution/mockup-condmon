@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Manajemen Dokumen</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+</head>
+<body>
+  <div class="container my-4">
+    <h1 class="mb-4 text-center">Manajemen Dokumen</h1>
+
+    <!-- Filter berdasarkan Tag Number -->
+    <div class="mb-4">
+      <label for="filterTag" class="form-label">Filter Dokumen Berdasarkan Tag Number</label>
+      <input type="text" id="filterTag" class="form-control" placeholder="Masukkan Tag Number" />
+    </div>
+
+    <!-- Card Kategori Dokumen -->
+    <div class="row mb-5" id="categoryCards">
+      <div class="col-md-4 mb-3">
+        <div class="card h-100 category-card" data-category="Predictive Maintenance">
+          <div class="card-body">
+            <h5 class="card-title">Predictive Maintenance (Condmon)</h5>
+            <p class="card-text">Dokumen terkait predictive maintenance atau condmon.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 mb-3">
+        <div class="card h-100 category-card" data-category="Preventive Maintenance">
+          <div class="card-body">
+            <h5 class="card-title">Preventive Maintenance (PM)</h5>
+            <p class="card-text">Dokumen terkait preventive maintenance.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 mb-3">
+        <div class="card h-100 category-card" data-category="Inspection">
+          <div class="card-body">
+            <h5 class="card-title">Inspection</h5>
+            <p class="card-text">Dokumen terkait inspection.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 mb-3">
+        <div class="card h-100 category-card" data-category="Corrective Maintenance">
+          <div class="card-body">
+            <h5 class="card-title">Corrective Maintenance</h5>
+            <p class="card-text">Dokumen terkait corrective maintenance.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 mb-3">
+        <div class="card h-100 category-card" data-category="Dokumen Lain">
+          <div class="card-body">
+            <h5 class="card-title">Dokumen Lain</h5>
+            <p class="card-text">Dokumen lainnya diluar kategori di atas.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Form Upload Dokumen -->
+    <h3>Upload Dokumen Baru</h3>
+    <form id="uploadForm" class="mb-5">
+      <div class="mb-3">
+        <label for="docTitle" class="form-label">Judul Dokumen</label>
+        <input type="text" class="form-control" id="docTitle" required />
+      </div>
+      <div class="mb-3">
+        <label for="docCategory" class="form-label">Kategori</label>
+        <select id="docCategory" class="form-select" required>
+          <option value="" disabled selected>Pilih Kategori</option>
+          <option value="Predictive Maintenance">Predictive Maintenance (Condmon)</option>
+          <option value="Preventive Maintenance">Preventive Maintenance (PM)</option>
+          <option value="Inspection">Inspection</option>
+          <option value="Corrective Maintenance">Corrective Maintenance</option>
+          <option value="Dokumen Lain">Dokumen Lain</option>
+        </select>
+      </div>
+      <div class="mb-3">
+        <label for="tagNumber" class="form-label">Tag Number</label>
+        <input type="text" class="form-control" id="tagNumber" placeholder="Masukkan Tag Number" required />
+      </div>
+      <div class="mb-3">
+        <label for="docFile" class="form-label">Pilih File Dokumen</label>
+        <input type="file" class="form-control" id="docFile" required />
+      </div>
+      <button type="submit" class="btn btn-primary">Upload</button>
+    </form>
+
+    <!-- Daftar Dokumen -->
+    <h3>Daftar Dokumen</h3>
+    <div id="documentList" class="list-group"></div>
+  </div>
+
+  <script>
+    const documents = [];
+
+    const uploadForm = document.getElementById('uploadForm');
+    const documentList = document.getElementById('documentList');
+    const filterTagInput = document.getElementById('filterTag');
+
+    function renderDocuments(filterTag = '') {
+      documentList.innerHTML = '';
+
+      const filteredDocs = documents.filter(doc =>
+        doc.tagNumber.toLowerCase().includes(filterTag.toLowerCase())
+      );
+
+      if (filteredDocs.length === 0) {
+        documentList.innerHTML = '<p class="text-muted">Tidak ada dokumen ditemukan.</p>';
+        return;
+      }
+
+      filteredDocs.forEach(doc => {
+        const item = document.createElement('a');
+        item.href = '#';
+        item.className = 'list-group-item list-group-item-action flex-column align-items-start';
+        item.innerHTML = `
+          <div class="d-flex w-100 justify-content-between">
+            <h5 class="mb-1">${doc.title}</h5>
+            <small><span class="badge bg-secondary">${doc.category}</span></small>
+          </div>
+          <p class="mb-1">Tag Number: <strong>${doc.tagNumber}</strong></p>
+          <small>File: ${doc.fileName}</small>
+        `;
+        documentList.appendChild(item);
+      });
+    }
+
+    uploadForm.addEventListener('submit', e => {
+      e.preventDefault();
+      const title = document.getElementById('docTitle').value.trim();
+      const category = document.getElementById('docCategory').value;
+      const tagNumber = document.getElementById('tagNumber').value.trim();
+      const fileInput = document.getElementById('docFile');
+      const file = fileInput.files[0];
+
+      if (!title || !category || !tagNumber || !file) {
+        alert('Semua field harus diisi!');
+        return;
+      }
+
+      // Simpan data dokumen (di sini hanya di array lokal)
+      documents.push({
+        title,
+        category,
+        tagNumber,
+        fileName: file.name,
+      });
+
+      // Reset form
+      uploadForm.reset();
+
+      // Render ulang dokumen
+      renderDocuments(filterTagInput.value);
+    });
+
+    filterTagInput.addEventListener('input', e => {
+      const filterValue = e.target.value;
+      renderDocuments(filterValue);
+    });
+
+    // Render awal
+    renderDocuments();
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

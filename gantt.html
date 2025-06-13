@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <title>Gantt Chart Maintenance</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/frappe-gantt/0.6.1/frappe-gantt.css" />
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 2rem;
+      background-color: #f8f9fa;
+    }
+    #gantt {
+      border: 1px solid #ccc;
+      padding: 10px;
+      background: white;
+      border-radius: 6px;
+    }
+    /* warna simpel untuk plan dan actual */
+    .bar-plan {
+      fill: #007bff;
+    }
+    .bar-done {
+      fill: #28a745;
+    }
+  </style>
+</head>
+<body>
+
+  <h2 style="text-align:center;">Gantt Chart Maintenance Plan & Actual</h2>
+  <div id="gantt"></div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/frappe-gantt/0.6.1/frappe-gantt.min.js"></script>
+  <script>
+    const tasks = [
+      {
+        id: '1',
+        name: 'Plan - CD3-P-004/00',
+        start: '2025-06-05',
+        end: '2025-06-06',
+        progress: 100,
+        custom_class: 'bar-plan'
+      },
+      {
+        id: '2',
+        name: 'Actual - CD3-P-004/00',
+        start: '2025-06-06',
+        end: '2025-06-07',
+        progress: 100,
+        custom_class: 'bar-done'
+      },
+      {
+        id: '3',
+        name: 'Plan - CD3-P-005/00',
+        start: '2025-06-10',
+        end: '2025-06-11',
+        progress: 100,
+        custom_class: 'bar-plan'
+      },
+      {
+        id: '4',
+        name: 'Actual - CD3-P-005/00',
+        start: '2025-06-11',
+        end: '2025-06-12',
+        progress: 100,
+        custom_class: 'bar-done'
+      },
+      {
+        id: '5',
+        name: 'Plan - CD3-P-006/00',
+        start: '2025-06-20',
+        end: '2025-06-21',
+        progress: 100,
+        custom_class: 'bar-plan'
+      },
+      {
+        id: '6',
+        name: 'Actual - CD3-P-006/00',
+        start: '2025-06-22',
+        end: '2025-06-23',
+        progress: 100,
+        custom_class: 'bar-done'
+      }
+    ];
+
+    new Gantt("#gantt", tasks, {
+      view_mode: 'Day',
+      language: 'id'
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Responsibility Matrix</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .category-row {
+            background-color: #d4e6f1 !important;
+            font-weight: bold;
+        }
+        .responsibility-cell {
+            min-width: 60px;
+            text-align: center;
+        }
+        .add-column-btn, .add-row-btn {
+            cursor: pointer;
+        }
+        .action-buttons {
+            white-space: nowrap;
+        }
+        table {
+            table-layout: fixed;
+        }
+        .reference-input {
+            min-width: 150px;
+        }
+        .criteria-input {
+            min-width: 200px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid mt-3">
+        <h2 class="mb-3">QUALITY CONTROL PLAN</h2>
+        
+        <div >
+            <table class="table table-bordered" id="responsibilityTable">
+                <thead class="table-dark">
+                    <tr>
+                        <th style="width: 40px;">NO</th>
+
+                    
+                      
+
+                        <th>ACTIVITY</th>
+                        <th>REFERENCE/ CODE STANDARD</th>
+                        <th>ACCEPTANCE CRITERIA</th>
+                      
+                        <th>MA</th>
+                        <th class="action-buttons">
+                            <button class="btn btn-sm btn-success add-column-btn" title="Add Responsibility Column">
+                                <i class="bi bi-plus-lg"></i> Add Column
+                            </button>
+                        </th>
+
+                        
+                          
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Category Row 1 -->
+                    <tr class="category-row">
+                        <td>1</td>
+
+      
+                        
+                        <td colspan="3"><strong>Pekerjaan Persiapan</strong></td>
+                        <td colspan="2">
+                            <button class="btn btn-sm btn-primary add-row-btn" data-category="1">
+                                <i class="bi bi-plus-lg"></i> Add Row
+                            </button>
+                        </td>
+                    </tr>
+                    <!-- Sub Row 1a -->
+                    <tr>
+                        <td>a</td>
+                                         
+                      
+            
+                        <td><input type="text" class="form-control form-control-sm" value="Persiapan tools & perizinan"></td>
+                        <td><input type="text" class="form-control form-control-sm reference-input" value="Manual book"></td>
+                        <td><input type="text" class="form-control form-control-sm criteria-input" value="Sesuai lingkup kerja"></td>
+                        <td>
+                            <select class="form-select form-select-sm responsibility-cell">
+                                <option value="-">-</option>
+                                <option value="A">A</option>
+                                <option value="S">S</option>
+                                <option value="D">D</option>
+                            </select>
+                        </td>
+                        <td class="action-buttons">
+                            <button class="btn btn-sm btn-danger remove-row-btn">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </td>
+          
+
+                    </tr>
+                    <!-- Sub Row 1b -->
+                    <tr>
+                        <td>b</td>
+
+                       
+           
+              
+
+                        <td><input type="text" class="form-control form-control-sm" value="Pemeriksaan material overhaul"></td>
+                        <td><input type="text" class="form-control form-control-sm reference-input" value="PO & Manual book"></td>
+                        <td><input type="text" class="form-control form-control-sm criteria-input" value="Sesuai PO"></td>
+                        <td>
+                            <select class="form-select form-select-sm responsibility-cell">
+                                <option value="-">-</option>
+                                <option value="A" selected>A</option>
+                                <option value="S">S</option>
+                                <option value="D">D</option>
+                            </select>
+                        </td>
+                        <td class="action-buttons">
+                            <button class="btn btn-sm btn-danger remove-row-btn">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                    
+                    <!-- Category Row 2 -->
+                    <tr class="category-row">
+                        <td>2</td>
+                        <td colspan="3"><strong>Pekerjaan Pembongkaran</strong></td>
+                        <td colspan="2">
+                            <button class="btn btn-sm btn-primary add-row-btn" data-category="2">
+                                <i class="bi bi-plus-lg"></i> Add Row
+                            </button>
+                        </td>
+                    </tr>
+                    <!-- Sub Row 2a -->
+                    <tr>
+                        <td>a</td>
+
+                       
+           
+                  
+
+
+                        <td><input type="text" class="form-control form-control-sm" value="Stop EGT, running aux. tube oil pump selama 2 jam"></td>
+                        <td><input type="text" class="form-control form-control-sm reference-input" value="Manual book"></td>
+                        <td><input type="text" class="form-control form-control-sm criteria-input" value="Temperatur quadrant <120°C"></td>
+                        <td>
+                            <select class="form-select form-select-sm responsibility-cell">
+                                <option value="-">-</option>
+                                <option value="A">A</option>
+                                <option value="S" selected>S</option>
+                                <option value="D">D</option>
+                            </select>
+                        </td>
+                        <td class="action-buttons">
+                            <button class="btn btn-sm btn-danger remove-row-btn">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="mt-3">
+            <button class="btn btn-primary" id="addCategoryBtn">
+                <i class="bi bi-plus-lg"></i> Add New Category
+            </button>
+            <button class="btn btn-primary" id="addCategoryBtn">
+                <i class="bi bi-plus-lg"></i> SUBMIT
+            </button>
+
+                        <button class="btn btn-success" id="addCategoryBtn">
+                <i class="bi bi-plus-lg"></i> APPROVE
+            </button>
+
+                                    <button class="btn btn-info" id="addCategoryBtn">
+                <i class="bi bi-plus-lg"></i> CETAK
+            </button>
+
+
+        </div>
+    </div>
+
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add new responsibility column
+            document.querySelector('.add-column-btn').addEventListener('click', function() {
+                const headerRow = document.querySelector('#responsibilityTable thead tr');
+                const newHeaderTh = document.createElement('th');
+                newHeaderTh.className = 'responsibility-cell';
+                newHeaderTh.innerHTML = `
+                    <input type="text" class="form-control form-control-sm" placeholder="Role">
+                    <button class="btn btn-sm btn-danger mt-1 remove-column-btn">
+                        <i class="bi bi-trash"></i>
+                    </button>
+                `;
+                headerRow.insertBefore(newHeaderTh, headerRow.lastElementChild);
+                
+                // Add to all rows
+                document.querySelectorAll('#responsibilityTable tbody tr').forEach(row => {
+                    if (!row.classList.contains('category-row')) {
+                        const newCell = document.createElement('td');
+                        newCell.innerHTML = `
+                            <select class="form-select form-select-sm responsibility-cell">
+                                <option value="-">-</option>
+                                <option value="A">A</option>
+                                <option value="S">S</option>
+                                <option value="D">D</option>
+                            </select>
+                        `;
+                        row.insertBefore(newCell, row.lastElementChild);
+                    } else {
+                        // For category rows, just add an empty cell
+                        const newCell = document.createElement('td');
+                        row.insertBefore(newCell, row.lastElementChild);
+                    }
+                });
+            });
+            
+            // Add new row under a category
+            document.addEventListener('click', function(e) {
+                if (e.target.classList.contains('add-row-btn')) {
+                    const categoryRow = e.target.closest('tr');
+                    const categoryNumber = e.target.getAttribute('data-category');
+                    const subRows = document.querySelectorAll(`tr:not(.category-row) td:first-child`);
+                    let maxSubLetter = 'a';
+                    
+                    // Find the highest sub-letter for this category
+subRows.forEach(cell => {
+    if (cell.textContent.match(new RegExp(`^[a-z]$`))) {  // Perhatikan penutupan kurung di sini
+        const row = cell.closest('tr');
+        let categoryRow = row.previousElementSibling;  // Tambahkan 'let' karena variabel ini akan diubah
+        while (categoryRow && !categoryRow.classList.contains('category-row')) {
+            categoryRow = categoryRow.previousElementSibling;
+        }
+        if (categoryRow && categoryRow.querySelector('td:first-child').textContent === categoryNumber) {
+            if (cell.textContent > maxSubLetter) {
+                maxSubLetter = cell.textContent;
+            }
+        }
+    }
+});
+                    
+                    const nextLetter = String.fromCharCode(maxSubLetter.charCodeAt(0) + 1);
+                    const newRow = document.createElement('tr');
+                    const responsibilityColumns = document.querySelectorAll('#responsibilityTable thead th').length - 5; // minus fixed columns
+                    
+                    let responsibilityCells = '';
+                    for (let i = 0; i < responsibilityColumns; i++) {
+                        responsibilityCells += `
+                            <td>
+                                <select class="form-select form-select-sm responsibility-cell">
+                                    <option value="-">-</option>
+                                    <option value="A">A</option>
+                                    <option value="S">S</option>
+                                    <option value="D">D</option>
+                                </select>
+                            </td>
+                        `;
+                    }
+                    
+                    newRow.innerHTML = `
+                        <td>${nextLetter}</td>
+                        <td><input type="text" class="form-control form-control-sm" placeholder="Activity description"></td>
+                        <td><input type="text" class="form-control form-control-sm reference-input" placeholder="Reference"></td>
+                        <td><input type="text" class="form-control form-control-sm criteria-input" placeholder="Criteria"></td>
+                        ${responsibilityCells}
+                        <td class="action-buttons">
+                            <button class="btn btn-sm btn-danger remove-row-btn">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </td>
+                    `;
+                    
+                    // Insert after the last row of this category
+                    let lastRowOfCategory = categoryRow;
+                    while (lastRowOfCategory.nextElementSibling && 
+                          !lastRowOfCategory.nextElementSibling.classList.contains('category-row')) {
+                        lastRowOfCategory = lastRowOfCategory.nextElementSibling;
+                    }
+                    
+                    lastRowOfCategory.insertAdjacentElement('afterend', newRow);
+                }
+                
+                // Remove row
+                if (e.target.classList.contains('remove-row-btn')) {
+                    if (confirm('Are you sure you want to remove this row?')) {
+                        e.target.closest('tr').remove();
+                    }
+                }
+                
+                // Remove column
+                if (e.target.classList.contains('remove-column-btn')) {
+                    if (confirm('Are you sure you want to remove this responsibility column?')) {
+                        const th = e.target.closest('th');
+                        const index = Array.from(th.parentNode.children).indexOf(th);
+                        
+                        // Remove from header
+                        th.remove();
+                        
+                        // Remove from all rows
+                        document.querySelectorAll('#responsibilityTable tbody tr').forEach(row => {
+                            const cells = row.querySelectorAll('td');
+                            if (cells.length > index + 4) { // +4 for fixed columns
+                                cells[index + 4].remove();
+                            }
+                        });
+                    }
+                }
+            });
+            
+            // Add new category
+            document.getElementById('addCategoryBtn').addEventListener('click', function() {
+                const categories = document.querySelectorAll('.category-row');
+                const lastCategoryNumber = categories.length > 0 ? 
+                    parseInt(categories[categories.length - 1].querySelector('td:first-child').textContent) : 0;
+                const newCategoryNumber = lastCategoryNumber + 1;
+                
+                const responsibilityColumns = document.querySelectorAll('#responsibilityTable thead th').length - 5;
+                let emptyCells = '';
+                for (let i = 0; i < responsibilityColumns; i++) {
+                    emptyCells += '<td></td>';
+                }
+                
+                const newCategoryRow = document.createElement('tr');
+                newCategoryRow.className = 'category-row';
+                newCategoryRow.innerHTML = `
+                    <td>${newCategoryNumber}</td>
+                    <td colspan="3"><input type="text" class="form-control form-control-sm" value="New Category"></td>
+                    ${emptyCells}
+                    <td>
+                        <button class="btn btn-sm btn-primary add-row-btn" data-category="${newCategoryNumber}">
+                            <i class="bi bi-plus-lg"></i> Add Row
+                        </button>
+                    </td>
+                `;
+                
+                document.querySelector('#responsibilityTable tbody').appendChild(newCategoryRow);
+            });
+        });
+    </script>
+</body>
+</html>

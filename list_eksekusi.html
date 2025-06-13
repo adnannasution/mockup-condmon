@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Measurement Point Form</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" />
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+    }
+
+    .sidebar {
+      width: 250px;
+      height: 100vh;
+      background: linear-gradient(to bottom, #0066ff, #00ccff);
+      color: white;
+      padding: 20px;
+      flex-shrink: 0;
+      transition: width 0.3s ease, padding 0.3s ease;
+      overflow: hidden;
+    }
+
+    /* Saat sidebar di-hide */
+    .sidebar.collapsed {
+      width: 0;
+      padding: 0;
+    }
+
+    .sidebar a {
+      color: white !important;
+      white-space: nowrap;
+    }
+
+    .sidebar .nav-link.active {
+      background-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .main-content {
+      flex-grow: 1;
+      overflow-y: auto;
+      padding: 20px;
+      background-color: #f8f9fa;
+      transition: margin-left 0.3s ease;
+    }
+
+    /* Push content saat sidebar di-hide */
+    .main-content.expanded {
+      margin-left: 0;
+    }
+
+    th,
+    td {
+      text-align: center;
+    }
+
+    /* Tombol toggle */
+    #toggleSidebarBtn {
+      position: fixed;
+      top: 10px;
+      left: 10px;
+      z-index: 9999;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Tombol Toggle Sidebar -->
+  <button id="toggleSidebarBtn" class="btn btn-primary">
+    <i class="bi bi-list"></i>
+  </button>
+
+  <!-- Sidebar -->
+  <div class="sidebar d-flex flex-column" id="sidebar">
+    <a href="/" class="d-flex align-items-center mb-3 text-decoration-none">
+      <span class="fs-4"><b>CONDITION MONITORING</b></span>
+    </a>
+    <hr />
+    <ul class="nav nav-pills flex-column mb-auto">
+      <li><a href="home.html" class="nav-link"><i class="bi bi-gear me-2"></i> Home</a></li>
+      <li><a href="list_eksekusi.html" class="nav-link"><i class="bi bi-gear me-2"></i> Condition monitoring</a></li>
+      <li><a href="list_adhoc.html" class="nav-link"><i class="bi bi-gear me-2"></i> Request Condmon</a></li>
+      <li><a href="tasklist.html" class="nav-link"><i class="bi bi-table me-2"></i> Task List</a></li>
+      <li><a href="list_scheduling.html" class="nav-link"><i class="bi bi-ui-checks-grid me-2"></i> Condmon Plan</a></li>
+      <li><a href="list_rekomendasi.html" class="nav-link"><i class="bi bi-gear me-2"></i> Recommendation</a></li>
+
+      <li>
+        <a
+          class="nav-link d-flex justify-content-between align-items-center"
+          data-bs-toggle="collapse"
+          href="#masterSubmenu"
+          role="button"
+          aria-expanded="false"
+          aria-controls="masterSubmenu"
+        >
+          <span><i class="bi bi-house-door-fill me-2"></i> Master</span>
+          <i class="bi bi-chevron-down"></i>
+        </a>
+        <div class="collapse ps-3" id="masterSubmenu">
+          <ul class="nav flex-column">
+            <li class="nav-item">
+              <a href="create_measurement_point.html" class="nav-link">
+                <i class="bi bi-circle me-2"></i> Meas. Point
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="Create_anomali.html" class="nav-link">
+                <i class="bi bi-circle me-2"></i> Anomali
+              </a>
+            </li>
+          </ul>
+        </div>
+      </li>
+    </ul>
+    <hr />
+    <div class="dropdown mt-auto">
+      <a
+        href="#"
+        class="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
+        data-bs-toggle="dropdown"
+      >
+        <i class="bi bi-person-circle me-2"></i><strong>User</strong>
+      </a>
+      <ul class="dropdown-menu text-small shadow">
+        <li><a class="dropdown-item" href="#">Profile</a></li>
+        <li><a class="dropdown-item" href="#">Logout</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="main-content" id="mainContent">
+    <div class="container mt-5">
+    
+
+  <h4 class="mb-4">Maintenance Plan</h4>
+
+    <!-- <a href="create_eksekusi.html" class="btn btn-info mb-3">Create Execution</a> -->
+
+
+
+     <form class="row g-3">
+    <!-- Tanggal -->
+    <div class="col-md-3">
+      <label for="tanggal" class="form-label">Tanggal</label>
+      <input type="date" class="form-control" id="tanggal" name="tanggal">
+    </div>
+
+    <!-- Area -->
+    <div class="col-md-3">
+      <label for="area" class="form-label">Area</label>
+      <select  class="form-control" id="area" name="area">
+        <option selected disabled>Pilih Area</option>
+        <option>Area 1</option>
+        <option>Area 2</option>
+        <option>Area 3</option>
+      </select>
+    </div>
+
+    <!-- Unit -->
+    <div class="col-md-3">
+      <label for="unit" class="form-label">Unit</label>
+      <select class="form-control" id="unit" name="unit">
+        <option selected disabled>Pilih Unit</option>
+        <option>Unit A</option>
+        <option>Unit B</option>
+        <option>Unit C</option>
+      </select>
+    </div>
+
+    <!-- Plan -->
+    <div class="col-md-3">
+      <label for="plan" class="form-label">ECR</label>
+      <select class="form-control" id="plan" name="plan">
+        <option selected disabled>Pilih ECR</option>
+        <option>Plan X</option>
+        <option>Plan Y</option>
+        <option>Plan Z</option>
+      </select>
+    </div>
+
+    <!-- Tag Number (searchable dropdown) -->
+    <div class="col-md-4">
+      <label for="tagNumber" class="form-label">Tag Number</label>
+      <select class="form-control" id="tagNumber" name="tagNumber">
+        <option selected disabled>Cari Tag Number</option>
+        <option>TAG-001</option>
+        <option>TAG-002</option>
+        <option>TAG-003</option>
+        <option>TAG-004</option>
+      </select>
+    </div>
+
+    <!-- Status Equipment -->
+    <div class="col-md-4">
+      <label for="status" class="form-label">Status Equipment</label>
+      <select class="form-control" id="status" name="status">
+        <option selected disabled>Pilih Status</option>
+        <option>Aktif</option>
+        <option>Non-Aktif</option>
+        <option>Maintenance</option>
+      </select>
+    </div>
+
+    <!-- Keterangan -->
+    <div class="col-md-4">
+      <label for="keterangan" class="form-label">Keterangan</label>
+      <input type="text" class="form-control" id="keterangan" name="keterangan" placeholder="Masukkan keterangan">
+    </div>
+
+
+  </form>
+
+<br>
+    <table  id="taskTable"   class="table-bordered table-hover table-striped table-responsive style="font-size: small ;">
+      <thead>
+        <tr>
+          <th>Maintenance Plan</th>
+          <th>Task List</th>
+          <th>Tag No</th>
+          <th>ECR</th>
+          <th>Area</th>
+          <th>Unit</th>
+          <th>Plan</th>
+          <th>Actual</th>
+          <th>Highest Vib<br>(mm/s)</th>
+          <th>Highest Acc<br>(g's)</th>
+          <th>Highest Temp<br>(°C)</th>
+          <th>Status Equipment</th>
+          <th>Keterangan</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>CM-RTN-CD3</td>
+          <td>CM-PUMP-BB</td>
+          <td>CD3-P-002/00</td>
+          <td>M</td>
+          <td>CDGP</td>
+          <td>CDU-III</td>
+          <td>1/5/2025</td>
+          <td>1/5/2025</td>
+          <td>2,1</td>
+          <td>0,8</td>
+          <td>56</td>
+          <td>Normal</td>
+         <td><span class="badge bg-success">reviewed</span></td>
+          <td><a href="detail_eksekusi.html" class="btn btn-primary btn-sm">Details</a></td>
+        </tr>
+        <tr>
+          <td>CM-RTN-CD3</td>
+          <td>CM-PUMP-BB</td>
+          <td>CD3-P-003/00</td>
+          <td>M</td>
+          <td>CDGP</td>
+          <td>CDU-III</td>
+          <td>1/5/2025</td>
+          <td>2/5/2025</td>
+          <td>4,6</td>
+          <td>3,01</td>
+          <td>81</td>
+          <td>Alert</td>
+          <td><span class="badge bg-success">reviewed</span></td>
+        <td><a href="detail_eksekusi.html" class="btn btn-primary btn-sm">Details</a></td>
+        </tr>
+        <tr>
+          <td>CM-RTN-CD3</td>
+          <td>CM-PUMP-BB</td>
+          <td>CD3-P-004/00</td>
+          <td>M</td>
+          <td>CDGP</td>
+          <td>CDU-III</td>
+          <td>1/5/2025</td>
+          <td></td>
+          <td>7,2</td>
+          <td>5,2</td>
+          <td>94</td>
+          <td>Danger</td>
+          <td></td>
+  <td><a href="detail_eksekusi.html" class="btn btn-primary btn-sm">Details</a></td>
+        </tr>
+        <tr>
+          <td>CM-RTN-CD3</td>
+          <td>CM-PUMP-BB</td>
+          <td>CD3-P-004/00</td>
+          <td>M</td>
+          <td>CDGP</td>
+          <td>CDU-III</td>
+          <td>1/5/2025</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td><span class="badge bg-warning">Not yet</span></td>
+        <td><a href="detail_eksekusi.html" class="btn btn-primary btn-sm">Details</a></td>
+        </tr>
+        <tr>
+          <td>CM-RTN-CD3</td>
+          <td>CM-PUMP-BB</td>
+          <td>CD3-P-005/00</td>
+          <td>M</td>
+          <td>CDGP</td>
+          <td>CDU-III</td>
+          <td>1/5/2025</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td><span class="badge bg-warning">Not yet</span></td>
+                   <td><a href="#" class="btn btn-primary btn-sm">Details</a></td>
+        </tr>
+        <tr>
+          <td>CM-RTN-UTL</td>
+          <td>CM-PUMP-OH</td>
+          <td>54-P-20A/00</td>
+          <td>L</td>
+          <td>UTL</td>
+          <td>DWP</td>
+          <td>10/5/2025</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td><span class="badge bg-warning">not yet</span></td>
+                   <td><a href="#" class="btn btn-primary btn-sm">Details</a></td>
+        </tr>
+        <tr>
+          <td>CM-ADHOC</td>
+          <td>CM-PUMP-BB</td>
+          <td>FC-P-4B/00</td>
+          <td>H</td>
+          <td>CDL</td>
+          <td>FCCU</td>
+            <td>5/5/2025</td>
+          <td>5/5/2025</td>
+          <td>0,9</td>
+          <td>0,05</td>
+          <td>42</td>
+          <td>Normal</td>
+           <td><span class="badge bg-success">reviewed</span></td>
+                   <td><a href="#" class="btn btn-primary btn-sm">Details</a></td>
+        </tr>
+        <tr>
+          <td>CM-ADHOC</td>
+          <td>CM-MOTOR-UNCOUPLE</td>
+          <td>14-PM-002/00</td>
+          <td>M</td>
+          <td>CDL</td>
+          <td>HVU</td>
+           <td>6/5/2025</td>
+          <td>6/5/2025</td>
+          <td>1,1</td>
+          <td>0,08</td>
+          <td></td>
+          <td>Normal</td>
+          <td><span class="badge bg-success">reviewed</span></td>
+                   <td><a href="#" class="btn btn-primary btn-sm">Details</a></td>
+        </tr>
+      </tbody>
+    </table>
+
+
+
+  <!-- JS Scripts -->
+  <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+
+  <script>
+    $(document).ready(function () {
+      const dataTable = $('#taskTable').DataTable();
+
+      let count = $('#taskTable tbody tr').length;
+
+      $('#measurementForm').on('submit', function(e) {
+        e.preventDefault();
+        const point = $('#measurementPoint').val().trim();
+
+        if (point !== '') {
+          count++;
+          dataTable.row.add([
+            count,
+            point
+          ]).draw();
+
+          this.reset();
+        }
+      });
+    });
+  </script>
+
+
+  <script>
+    const toggleBtn = document.getElementById("toggleSidebarBtn");
+    const sidebar = document.getElementById("sidebar");
+    const mainContent = document.getElementById("mainContent");
+
+    toggleBtn.addEventListener("click", () => {
+      sidebar.classList.toggle("collapsed");
+      mainContent.classList.toggle("expanded");
+    });
+  </script>
+
+
+
+</body>
+</html>

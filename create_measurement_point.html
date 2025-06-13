@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Measurement Point Form</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+    }
+
+    .sidebar {
+      width: 250px;
+      height: 100vh;
+      background: linear-gradient(to bottom, #0066ff, #00ccff);
+      color: white;
+      padding: 20px;
+      flex-shrink: 0;
+    }
+
+    .sidebar a {
+      color: white !important;
+    }
+
+    .sidebar .nav-link.active {
+      background-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .main-content {
+      flex-grow: 1;
+      overflow-y: auto;
+      padding: 20px;
+      background-color: #f8f9fa;
+    }
+
+    th, td {
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Sidebar -->
+  <div class="sidebar d-flex flex-column">
+    <a href="/" class="d-flex align-items-center mb-3 text-decoration-none">
+      <span class="fs-4"><b>CONDITION MONITORING</b></span>
+    </a>
+    <hr>
+    <ul class="nav nav-pills flex-column mb-auto">
+          <li><a href="home.html" class="nav-link"><i class="bi bi-gear me-2"></i> Home</a></li>
+      <li><a href="list_eksekusi.html" class="nav-link"><i class="bi bi-gear me-2"></i> Condtion monitorng</a></li>
+      <li><a href="list_adhoc.html" class="nav-link"><i class="bi bi-gear me-2"></i> Request Condmon</a></li>
+      <li><a href="tasklist.html" class="nav-link"><i class="bi bi-table me-2"></i> Task List</a></li>
+      <li><a href="list_scheduling.html" class="nav-link"><i class="bi bi-ui-checks-grid me-2"></i> Condmon Plan</a></li>
+      <li><a href="list_rekomendasi.html" class="nav-link"><i class="bi bi-gear me-2"></i> Recomendation</a></li>
+
+      <li>
+    <a class="nav-link d-flex justify-content-between align-items-center" data-bs-toggle="collapse" href="#masterSubmenu" role="button" aria-expanded="false" aria-controls="masterSubmenu">
+      <span><i class="bi bi-house-door-fill me-2"></i> Master</span>
+      <i class="bi bi-chevron-down"></i>
+    </a>
+    <div class="collapse ps-3" id="masterSubmenu">
+      <ul class="nav flex-column">
+        <li class="nav-item">
+          <a href="create_measurement_point.html" class="nav-link">
+            <i class="bi bi-circle me-2"></i> Meas. Point
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="Create_anomali.html" class="nav-link">
+            <i class="bi bi-circle me-2"></i> Anomali
+          </a>
+        </li>
+      </ul>
+    </div>
+  </li>
+
+  
+    </ul>
+    <hr>
+    <div class="dropdown mt-auto">
+      <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" data-toggle="dropdown">
+        <i class="bi bi-person-circle me-2"></i><strong>User</strong>
+      </a>
+      <ul class="dropdown-menu text-small shadow">
+        <li><a class="dropdown-item" href="#">Profile</a></li>
+        <li><a class="dropdown-item" href="#">Logout</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <div class="container mt-5">
+      <h4>Measurement Point</h4>
+      
+
+
+<form id="measurementForm" class="mb-4">
+  <div class="form-group">
+    <label for="measurementPoint">Measurement Point</label>
+    <input type="text" class="form-control" id="measurementPoint" required>
+  </div>
+
+  <div class="form-row">
+    <div class="form-group col-md-4">
+      <label for="minValue">Min</label>
+      <input type="number" class="form-control" id="minValue" required>
+    </div>
+    <div class="form-group col-md-4">
+      <label for="maxValue">Max</label>
+      <input type="number" class="form-control" id="maxValue" required>
+    </div>
+    <div class="form-group col-md-4">
+      <label for="status">Status</label>
+      <input type="text" class="form-control" id="status" required>
+    </div>
+  </div>
+
+  <button type="submit" class="btn btn-primary">Add</button>
+</form>
+
+
+
+      <h5>Measurement Data</h5>
+
+      <table class="table table-bordered table-striped" id="taskTable">
+        <thead>
+          <tr>
+            <th width="50px">No</th>
+            <th>Measurement Point</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>1</td><td>DE</td></tr>
+          <tr><td>2</td><td>NDE</td></tr>
+
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- JS Scripts -->
+  <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+
+  <script>
+    $(document).ready(function () {
+      const dataTable = $('#taskTable').DataTable();
+
+      let count = $('#taskTable tbody tr').length;
+
+      $('#measurementForm').on('submit', function(e) {
+        e.preventDefault();
+        const point = $('#measurementPoint').val().trim();
+
+        if (point !== '') {
+          count++;
+          dataTable.row.add([
+            count,
+            point
+          ]).draw();
+
+          this.reset();
+        }
+      });
+    });
+  </script>
+</body>
+</html>

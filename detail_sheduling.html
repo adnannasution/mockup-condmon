@@ -1,0 +1,505 @@
+
+
+  <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Measurement Point Form</title>
+
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+
+
+
+
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+
+
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+    }
+
+    .sidebar {
+      width: 250px;
+      height: 100vh;
+      background: linear-gradient(to bottom, #0066ff, #00ccff);
+      color: white;
+      padding: 20px;
+      flex-shrink: 0;
+    }
+
+    .sidebar a {
+      color: white !important;
+    }
+
+    .sidebar .nav-link.active {
+      background-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .main-content {
+      flex-grow: 1;
+      overflow-y: auto;
+      padding: 20px;
+      background-color: #f8f9fa;
+    }
+
+    th, td {
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Sidebar -->
+  <div class="sidebar d-flex flex-column">
+    <a href="/" class="d-flex align-items-center mb-3 text-decoration-none">
+      <span class="fs-4"><b>CONDITION MONITORING</b></span>
+    </a>
+    <hr>
+    <ul class="nav nav-pills flex-column mb-auto">
+     
+           <li><a href="home.html" class="nav-link"><i class="bi bi-gear me-2"></i> Home</a></li>
+ <li><a href="list_eksekusi.html" class="nav-link"><i class="bi bi-gear me-2"></i> Condtion monitorng</a></li>
+      <li><a href="list_adhoc.html" class="nav-link"><i class="bi bi-gear me-2"></i> Request Condmon</a></li>
+      <li><a href="tasklist.html" class="nav-link"><i class="bi bi-table me-2"></i> Task List</a></li>
+      <li><a href="list_scheduling.html" class="nav-link"><i class="bi bi-ui-checks-grid me-2"></i> Condmon Plan</a></li>
+      <li><a href="list_rekomendasi.html" class="nav-link"><i class="bi bi-gear me-2"></i> Recomendation</a></li>
+
+
+      
+       <li>
+    <a class="nav-link d-flex justify-content-between align-items-center" data-bs-toggle="collapse" href="#masterSubmenu" role="button" aria-expanded="false" aria-controls="masterSubmenu">
+      <span><i class="bi bi-house-door-fill me-2"></i> Master</span>
+      <i class="bi bi-chevron-down"></i>
+    </a>
+    <div class="collapse ps-3" id="masterSubmenu">
+      <ul class="nav flex-column">
+        <li class="nav-item">
+          <a href="create_measurement_point.html" class="nav-link">
+            <i class="bi bi-circle me-2"></i> Meas. Point
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="Create_anomali.html" class="nav-link">
+            <i class="bi bi-circle me-2"></i> Anomali
+          </a>
+        </li>
+      </ul>
+    </div>
+  </li>
+      
+    </ul>
+    <hr>
+    <div class="dropdown mt-auto">
+      <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" data-toggle="dropdown">
+        <i class="bi bi-person-circle me-2"></i><strong>User</strong>
+      </a>
+      <ul class="dropdown-menu text-small shadow">
+        <li><a class="dropdown-item" href="#">Profile</a></li>
+        <li><a class="dropdown-item" href="#">Logout</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <div class="container mt-5">
+    
+
+
+
+
+
+
+       <h3 class="mb-4">Detail Condmon Plan</h3>
+  <form id="scheduleForm">
+    <!-- Maintenance Plan Item -->
+    <div class="mb-3">
+      <label for="maintenancePlanItem" class="form-label">Maintenance Plan Item</label>
+      <input type="text" class="form-control" id="maintenancePlanItem" placeholder="Masukkan Maintenance Plan Item" required>
+    </div>
+
+
+
+
+
+    <!-- Task List -->
+
+
+<!-- Dynamic Task List -->
+<div class="mb-3">
+   <label for="taskList" class="form-label">Task List</label>
+  <div id="taskListGroup">
+    <div class="row g-2 mb-2">
+      <div class="col-md-9">
+        <select class="form-select" name="taskList[]" required>
+          <option value="">-- Pilih Task --</option>
+          <option value="Task A">Task A</option>
+          <option value="Task B">Task B</option>
+        </select>
+      </div>
+      <div class="col-md-3">
+        <button class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#mpModal">
+          View Measure Point
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <button class="btn btn-success" type="button" onclick="addTaskList()">+ Add Task</button>
+</div>
+
+<!-- Script -->
+
+
+<script>
+  function addTaskList() {
+    const taskGroup = document.getElementById("taskListGroup");
+    const newRow = document.createElement("div");
+    newRow.className = "row g-2 align-items-end mb-2";
+
+    newRow.innerHTML = `
+      <div class="col-md-9">
+        <label class="form-label">Task List</label>
+        <select class="form-select" name="taskList[]" required>
+          <option value="">-- Pilih Task --</option>
+          <option value="Task A">Task A</option>
+          <option value="Task B">Task B</option>
+        </select>
+      </div>
+      <div class="col-md-3">
+        <div class="d-flex justify-content-between">
+          <button class="btn btn-primary me-2" type="button" data-bs-toggle="modal" data-bs-target="#mpModal">
+            View Measure Point
+          </button>
+          <button class="btn btn-danger" type="button" onclick="this.closest('.row').remove()">
+            Hapus
+          </button>
+        </div>
+      </div>
+    `;
+
+    taskGroup.appendChild(newRow);
+  }
+</script>
+
+
+
+
+
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="mpModal" tabindex="-1" aria-labelledby="mpModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      
+      <div class="modal-header">
+        <h5 class="modal-title" id="mpModalLabel">Daftar Measurement Point</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      
+      <div class="modal-body">
+        <div class="mb-2">
+       
+        </div>
+        <table class="table table-bordered">
+          <thead class="table-light">
+            <tr>
+           
+              <th>No</th>
+              <th>Nama Measurement Point</th>
+            
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Data Dummy -->
+            <tr>
+       
+              <td>1</td>
+         
+              <td>Mengukur suhu pada mesin utama</td>
+            </tr>
+            <tr>
+           
+              <td>2</td>
+            
+              <td>Mengukur tekanan pipa A1</td>
+            </tr>
+            <tr>
+           
+              <td>3</td>
+          
+              <td>Menghitung aliran fluida di unit 3</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+
+      </div>
+      
+    </div>
+  </div>
+</div>
+
+
+
+
+<div class="row g-3 align-items-end mb-3">
+  <!-- Area -->
+  <div class="col-md-3">
+    <label for="area" class="form-label">Area</label>
+    <select id="area" class="form-select area-select" required>
+      <option value="">-- Pilih Area --</option>
+      <option value="Area 1">Area 1</option>
+      <option value="Area 2">Area 2</option>
+    </select>
+  </div>
+
+  <!-- Unit -->
+  <div class="col-md-3">
+    <label for="unit" class="form-label">Unit</label>
+    <select id="unit" class="form-select unit-select" required disabled>
+      <option value="">-- Pilih Unit --</option>
+      <option value="Unit A">Unit A</option>
+      <option value="Unit B">Unit B</option>
+    </select>
+  </div>
+
+  <!-- Tag Number -->
+  <div class="col-md-3">
+    <label for="tag" class="form-label">Tag Number</label>
+    <select id="tag" class="form-select tag-select" required disabled>
+      <option value="">-- Pilih Tag --</option>
+      <option value="Tag001">Tag001</option>
+      <option value="Tag002">Tag002</option>
+    </select>
+  </div>
+
+  <!-- Tombol Hapus -->
+ 
+</div>
+
+
+
+
+    <!-- Measurement Point -->
+  
+
+<!-- Container untuk baris dinamis -->
+<div id="dynamicFields"></div>
+
+<!-- Tombol untuk menambahkan baris baru -->
+<button type="button" class="btn btn-success mb-3" id="addRow">+ Add Area/Unit/Tag</button>
+
+<script>
+  document.getElementById("addRow").addEventListener("click", function () {
+    const container = document.getElementById("dynamicFields");
+
+    const row = document.createElement("div");
+    row.className = "row g-3 align-items-end mb-3";
+
+    row.innerHTML = `
+      <!-- Area -->
+      <div class="col-md-3">
+        <label class="form-label">Area</label>
+        <select class="form-select area-select" required>
+          <option value="">-- Pilih Area --</option>
+          <option value="Area 1">Area 1</option>
+          <option value="Area 2">Area 2</option>
+        </select>
+      </div>
+
+      <!-- Unit -->
+      <div class="col-md-3">
+        <label class="form-label">Unit</label>
+        <select class="form-select unit-select" required disabled>
+          <option value="">-- Pilih Unit --</option>
+          <option value="Unit A">Unit A</option>
+          <option value="Unit B">Unit B</option>
+        </select>
+      </div>
+
+      <!-- Tag Number -->
+      <div class="col-md-3">
+        <label class="form-label">Tag Number</label>
+        <select class="form-select tag-select" required disabled>
+          <option value="">-- Pilih Tag --</option>
+          <option value="Tag001">Tag001</option>
+          <option value="Tag002">Tag002</option>
+        </select>
+      </div>
+
+      <!-- Tombol Hapus -->
+      <div class="col-md-3">
+        <button type="button" class="btn btn-danger remove-row">Hapus</button>
+      </div>
+    `;
+
+    // Tambahkan event listener untuk tombol hapus di dalam baris
+    row.querySelector(".remove-row").addEventListener("click", function () {
+      row.remove();
+    });
+
+    container.appendChild(row);
+  });
+</script>
+
+
+    <!-- Jadwal -->
+    <div class="row mb-3">
+      <div class="col-md-3">
+        <label for="startDate" class="form-label">Start Date</label>
+        <input type="date" class="form-control" id="startDate" required>
+      </div>
+      <div class="col-md-3">
+        <label for="endDate" class="form-label">End Date</label>
+        <input type="date" class="form-control" id="endDate" required>
+      </div>
+      <div class="col-md-3">
+        <label for="interval" class="form-label">Setiap</label>
+        <input type="number" class="form-control" id="interval" required>
+      </div>
+      <div class="col-md-3">
+        <label for="unitTime" class="form-label">Satuan Waktu</label>
+        <select class="form-select" id="unitTime" required>
+          <option value="days">Hari</option>
+          <option value="weeks">Minggu</option>
+          <option value="months">Bulan</option>
+        </select>
+      </div>
+    </div>
+
+    <button type="button" class="btn btn-primary" id="generateBtn">Generate Schedule</button>
+  </form>
+
+  <hr>
+
+
+</div>
+
+
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th>No</th>
+      <th>Tanggal</th>
+      <th>Maintenance Plan Item</th>
+      <th>Task</th>
+      <th>Area</th>
+      <th>Unit</th>
+      <th>Tag Number</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1</td>
+      <td>2025-05-27</td>
+      <td>Plan ABC</td>
+      <td>Task A</td>
+      <td>Area A</td>
+      <td>Unit X</td>
+      <td>TAG001</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>2025-05-30</td>
+      <td>Plan ABC</td>
+      <td>Task B</td>
+      <td>Area B</td>
+      <td>Unit Z</td>
+      <td>TAG005</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>2025-06-02</td>
+      <td>Plan ABC</td>
+      <td>Task A</td>
+      <td>Area A</td>
+      <td>Unit X</td>
+      <td>TAG001</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>2025-06-05</td>
+      <td>Plan ABC</td>
+      <td>Task B</td>
+      <td>Area B</td>
+      <td>Unit Z</td>
+      <td>TAG005</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>2025-06-08</td>
+      <td>Plan ABC</td>
+      <td>Task A</td>
+      <td>Area A</td>
+      <td>Unit X</td>
+      <td>TAG001</td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td>2025-06-11</td>
+      <td>Plan ABC</td>
+      <td>Task B</td>
+      <td>Area B</td>
+      <td>Unit Z</td>
+      <td>TAG005</td>
+    </tr>
+    <tr>
+      <td>7</td>
+      <td>2025-06-14</td>
+      <td>Plan ABC</td>
+      <td>Task A</td>
+      <td>Area A</td>
+      <td>Unit X</td>
+      <td>TAG001</td>
+    </tr>
+    <tr>
+      <td>8</td>
+      <td>2025-06-17</td>
+      <td>Plan ABC</td>
+      <td>Task B</td>
+      <td>Area B</td>
+      <td>Unit Z</td>
+      <td>TAG005</td>
+    </tr>
+    <tr>
+      <td>9</td>
+      <td>2025-06-20</td>
+      <td>Plan ABC</td>
+      <td>Task A</td>
+      <td>Area A</td>
+      <td>Unit X</td>
+      <td>TAG001</td>
+    </tr>
+
+  </tbody>
+</table>
+
+
+<a href="list_scheduling.html" class="btn btn-success">Approve</a>
+<a href="list_scheduling.html" class="btn btn-primary">Revise</a>
+<a href="list_scheduling.html" class="btn btn-secondary">Kembali</a>
+
+
+
+
+
+
+</body>
+</html>

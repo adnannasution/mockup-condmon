@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Halaman dengan Tabs dan Tabel</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" />
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+
+
+
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+
+  <style>
+    #detailSection {
+      margin-top: 20px;
+    }
+  </style>
+
+
+ <style>
+    body {
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+    }
+
+    .sidebar {
+      width: 250px;
+      height: 100vh;
+      background: linear-gradient(to bottom, #0066ff, #00ccff);
+      color: white;
+      padding: 20px;
+      flex-shrink: 0;
+    }
+
+    .sidebar a {
+      color: white !important;
+    }
+
+    .sidebar .nav-link.active {
+      background-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .main-content {
+      flex-grow: 1;
+      overflow-y: auto;
+      padding: 20px;
+      background-color: #f8f9fa;
+    }
+
+    th, td {
+      text-align: center;
+    }
+  </style>
+
+
+</head>
+<body>
+
+
+
+   <!-- Sidebar -->
+  <div class="sidebar d-flex flex-column">
+    <a href="/" class="d-flex align-items-center mb-3 text-decoration-none">
+      <span class="fs-4"><b>CONDITION MONITORING</b></span>
+    </a>
+    <hr>
+    <ul class="nav nav-pills flex-column mb-auto">
+
+    <li><a href="home.html" class="nav-link"><i class="bi bi-gear me-2"></i> Home</a></li>
+      <li><a href="list_eksekusi.html" class="nav-link"><i class="bi bi-gear me-2"></i> Condtion monitorng</a></li>
+      <li><a href="list_adhoc.html" class="nav-link"><i class="bi bi-gear me-2"></i> Request Condmon</a></li>
+      <li><a href="tasklist.html" class="nav-link"><i class="bi bi-table me-2"></i> Task List</a></li>
+      <li><a href="list_scheduling.html" class="nav-link"><i class="bi bi-ui-checks-grid me-2"></i> Condmon Plan</a></li>
+      <li><a href="list_rekomendasi.html" class="nav-link"><i class="bi bi-gear me-2"></i> Recomendation</a></li>
+
+       <li>
+    <a class="nav-link d-flex justify-content-between align-items-center" data-bs-toggle="collapse" href="#masterSubmenu" role="button" aria-expanded="false" aria-controls="masterSubmenu">
+      <span><i class="bi bi-house-door-fill me-2"></i> Master</span>
+      <i class="bi bi-chevron-down"></i>
+    </a>
+    <div class="collapse ps-3" id="masterSubmenu">
+      <ul class="nav flex-column">
+        <li class="nav-item">
+          <a href="create_measurement_point.html" class="nav-link">
+            <i class="bi bi-circle me-2"></i> Meas. Point
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="Create_anomali.html" class="nav-link">
+            <i class="bi bi-circle me-2"></i> Anomali
+          </a>
+        </li>
+      </ul>
+    </div>
+  </li>
+
+
+    </ul>
+    <hr>
+    <div class="dropdown mt-auto">
+      <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" data-toggle="dropdown">
+        <i class="bi bi-person-circle me-2"></i><strong>User</strong>
+      </a>
+      <ul class="dropdown-menu text-small shadow">
+        <li><a class="dropdown-item" href="#">Profile</a></li>
+        <li><a class="dropdown-item" href="#">Logout</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="main-content container">
+    <div class="mt-5">
+
+  <!-- FORM -->
+  <div class="">
+    <h4>Create Rekomendasi</h4>
+    <form>
+      <div class="row mb-3">
+        <div class="col-md-3">
+          <label class="form-label">Area</label>
+          <input type="text" class="form-control" name="area" placeholder="Masukkan Area" />
+        </div>
+        <div class="col-md-3">
+          <label class="form-label">Unit</label>
+          <input type="text" class="form-control" name="unit" placeholder="Masukkan Unit" />
+        </div>
+        <div class="col-md-3">
+          <label class="form-label">Equipment</label>
+          <select class="form-select" name="equipment">
+            <option selected>-- Pilih Equipment --</option>
+            <option>Compressor</option>
+            <option>Pump</option>
+            <option>Valve</option>
+          </select>
+        </div>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Deskripsi</label>
+        <textarea class="form-control" name="deskripsi" rows="3" placeholder="Tulis deskripsi..."></textarea>
+      </div>
+
+      <div class="row mb-3">
+  <div class="col-md-3">
+    <label class="form-label">Manufacturer</label>
+    <input type="text" class="form-control" name="manufacturer" placeholder="Masukkan Manufacturer" />
+  </div>
+  <div class="col-md-3">
+    <label class="form-label">Country</label>
+    <input type="text" class="form-control" name="country" placeholder="Masukkan Country" />
+  </div>
+  <div class="col-md-3">
+    <label class="form-label">Tahun/Bulan Produksi</label>
+    <input type="month" class="form-control" name="produksi" />
+  </div>
+  <div class="col-md-3">
+    <label class="form-label">Model / Type</label>
+    <input type="text" class="form-control" name="model" placeholder="Masukkan Model/Type" />
+  </div>
+</div>
+<div class="mb-3">
+  <label class="form-label">Kapasitas</label>
+  <input type="text" class="form-control" name="kapasitas" placeholder="Misal: 200 L/mnt" />
+</div>
+
+
+    </form>
+  </div>
+
+  <!-- TABS -->
+  <div class="container mb-3">
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+      <li class="nav-item" role="presentation">
+        <button class="nav-link active" id="condmon-tab" data-bs-toggle="tab" data-bs-target="#condmon" type="button" role="tab" aria-controls="condmon" aria-selected="true">Condmon Result</button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="dataperalatan-tab" data-bs-toggle="tab" data-bs-target="#dataperalatan" type="button" role="tab" aria-controls="dataperalatan" aria-selected="false">Inspection report</button>
+      </li>
+    </ul>
+    <div class="tab-content" id="myTabContent" style="margin-top: 15px;">
+      <!-- TAB CONDMON -->
+      <div class="tab-pane fade show active" id="condmon" role="tabpanel" aria-labelledby="condmon-tab">
+      <table id="equipmentTable" class="display table table-bordered" style="width:100%">
+  <thead>
+    <tr>
+
+      <th>Task List</th>
+      <th>Tag No</th>
+      <th>ECR</th>
+      <th>Area</th>
+      <th>Unit</th>
+      <th>Plan</th>
+      <th>Actual</th>
+      <th>Highest Vib (mm/s)</th>
+      <th>Highest Acc (g's)</th>
+      <th>Highest Temp (°C)</th>
+      <th>Status Equipment</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr data-keterangan="Keterangan contoh untuk TAG-001"
+        data-tasklist="Task 1, Task 2, Task 3"
+        data-measurement="MP-1001, MP-1002">
+   
+      <td>Task 1, Task 2</td>
+      <td>TAG-001</td>
+      <td>ECR-123</td>
+      <td>Area A</td>
+      <td>Unit X</td>
+      <td>2025-06-01</td>
+      <td>2025-06-03</td>
+      <td>4.5</td>
+      <td>0.8</td>
+      <td>85</td>
+      <td>Normal</td>
+      <td><button class="btn btn-sm btn-info view-btn" onclick="showDiv('divA')">View</button></td>
+    </tr>
+    <tr data-keterangan="Keterangan contoh untuk TAG-002"
+        data-tasklist="Task A, Task B"
+        data-measurement="MP-2001, MP-2002">
+
+      <td>Task A, Task B</td>
+      <td>TAG-002</td>
+      <td>ECR-124</td>
+      <td>Area B</td>
+      <td>Unit Y</td>
+      <td>2025-07-01</td>
+      <td>2025-07-03</td>
+      <td>3.2</td>
+      <td>1.1</td>
+      <td>75</td>
+      <td>Maintenance Needed</td>
+      <td><button class="btn btn-sm btn-info view-btn">View</button></td>
+    </tr>
+  </tbody>
+</table>
+
+      </div>
+
+      <!-- TAB DATA PERALATAN -->
+      <div class="tab-pane fade" id="dataperalatan" role="tabpanel" aria-labelledby="dataperalatan-tab">
+      
+
+        <table id="dataPeralatanTable" class="display table table-bordered" style="width:100%">
+  <thead>
+    <tr>
+      <th>Tag Number</th>
+      <th>Area</th>
+      <th>Unit</th>
+      <th>Data Peralatan</th>
+      <th>Description</th>
+      <th>Manufacturer</th>
+      <th>Country</th>
+      <th>Tahun/Bulan Produksi</th>
+      <th>Model / Type</th>
+      <th>Kapasitas</th>
+      <th>Hasil Pemeriksaan</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr data-keterangan="Keterangan Data Peralatan TAG-101"
+        data-tasklist="Task X, Task Y"
+        data-measurement="MP-3001">
+      <td>TAG-101</td>
+      <td>Area C</td>
+      <td>Unit Z</td>
+      <td>Compressor Model XYZ</td>
+      <td>Pompa utama</td>
+      <td>PT. Mesin Maju</td>
+      <td>Indonesia</td>
+      <td>2022/06</td>
+      <td>XPZ-200</td>
+      <td>200 L/mnt</td>
+      <td>OK</td>
+      <td><button class="btn btn-sm btn-info view-peralatan view-btn2" onclick="showDiv('divB')">View</button></td>
+    </tr>
+    <tr data-keterangan="Keterangan Data Peralatan TAG-102"
+        data-tasklist="Task M, Task N"
+        data-measurement="MP-3002">
+      <td>TAG-102</td>
+      <td>Area D</td>
+      <td>Unit W</td>
+      <td>Valve Model ABC</td>
+      <td>Pompa utama</td>
+      <td>PT. Mesin Maju</td>
+      <td>Indonesia</td>
+      <td>2022/06</td>
+      <td>XPZ-200</td>
+      <td>200 L/mnt</td>
+      <td>Minor Issue</td>
+      <td><button class="btn btn-sm btn-info view-peralatan">View</button></td>
+    </tr>
+  </tbody>
+</table>
+
+
+      </div>
+    </div>
+  </div>
+
+  <!-- DETAIL SECTION -->
+  <div class="container" id="detailSection">
+    <div class="row">
+      <!-- KIRI: Collapse -->
+      <div class="col-md-6">
+        <h5>Detail Informasi</h5>
+        <div class="accordion" id="detailAccordion">
+
+      
+<div id="divA" style="display: block;">
+  <!-- Informasi Umum -->
+  <div class="accordion-item">
+    <h2 class="accordion-header" id="headingGeneral">
+      <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseGeneral">
+        Informasi Umum
+      </button>
+    </h2>
+    <div id="collapseGeneral" class="accordion-collapse collapse show" data-bs-parent="#equipmentAccordion">
+      <div class="accordion-body">
+        <p><strong>Tanggal Pengukuran:</strong> mm/dd/yyyy</p>
+        <p><strong>Waktu:</strong> --:-- --</p>
+        <p><strong>Purpose:</strong> Adhoc</p>
+        <p><strong>Maintenance Plan Item:</strong> MPI-001</p>
+        <p><strong>Tag No:</strong> TAG-001</p>
+        <p><strong>Area:</strong> Area A</p>
+        <p><strong>Unit:</strong> Unit 1</p>
+        <p><strong>Type:</strong> Pump</p>
+        <p><strong>Equipment Criticality Rating:</strong> High</p>
+        <p><strong>Measuring Point:</strong> MP-1002</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Driven -->
+  <div class="accordion-item">
+    <h2 class="accordion-header" id="headingDriven">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseDriven">
+        Driven (Pump A)
+      </button>
+    </h2>
+    <div id="collapseDriven" class="accordion-collapse collapse" data-bs-parent="#equipmentAccordion">
+      <div class="accordion-body">
+        <p><strong>RPM:</strong> RPM</p>
+        <p><strong>V RMS Horizontal DE (mm/s):</strong> </p>
+        <p><strong>V RMS Vertical DE (mm/s):</strong> </p>
+        <p><strong>V RMS Axial DE (mm/s):</strong> </p>
+        <p><strong>G's DE (mm/s):</strong> </p>
+        <p><strong>V RMS Horizontal NDE (mm/s):</strong> </p>
+        <p><strong>V RMS Vertical NDE (mm/s):</strong> </p>
+        <p><strong>V RMS Axial NDE (mm/s):</strong> </p>
+        <p><strong>G's NDE (mm/s):</strong> </p>
+        <p><strong>Temperature DE (°C):</strong> </p>
+        <p><strong>Temperature NDE (°C):</strong> </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Driver -->
+  <div class="accordion-item">
+    <h2 class="accordion-header" id="headingDriver">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseDriver">
+        Driver
+      </button>
+    </h2>
+    <div id="collapseDriver" class="accordion-collapse collapse" data-bs-parent="#equipmentAccordion">
+      <div class="accordion-body">
+        <p><strong>Driver:</strong> -- Pilih Driver --</p>
+        <p><strong>RPM:</strong> RPM</p>
+        <p><strong>V RMS Horizontal DE (mm/s):</strong> </p>
+        <p><strong>V RMS Vertical DE (mm/s):</strong> </p>
+        <p><strong>V RMS Axial DE (mm/s):</strong> </p>
+        <p><strong>G's DE (g):</strong> </p>
+        <p><strong>V RMS Horizontal NDE (mm/s):</strong> </p>
+        <p><strong>V RMS Vertical NDE (mm/s):</strong> </p>
+        <p><strong>V RMS Axial NDE (mm/s):</strong> </p>
+        <p><strong>G's NDE (g):</strong> </p>
+        <p><strong>Temperature DE (°C):</strong> </p>
+        <p><strong>Temperature NDE (°C):</strong> </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Parameter Tambahan -->
+  <div class="accordion-item">
+    <h2 class="accordion-header" id="headingParam">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseParam">
+        Parameter Tambahan
+      </button>
+    </h2>
+    <div id="collapseParam" class="accordion-collapse collapse" data-bs-parent="#equipmentAccordion">
+      <div class="accordion-body">
+        <p><strong>Parameter:</strong> -- Pilih Parameter --</p>
+        <p><strong>Disch. Press (Kg/cm²):</strong> </p>
+        <p><strong>Upload Evidence:</strong> No file chosen</p>
+        <p><strong>Indikasi:</strong> -- Pilih Indikasi --</p>
+        <p><strong>Status Vibrasi:</strong> </p>
+        <p><strong>Status Temperatur:</strong> </p>
+        <p><strong>Remarks:</strong> Need Recommendation</p>
+        <p><strong>Checker:</strong> </p>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+
+
+<div class="accordion" id="divB" style="display: none">
+  <!-- Pemeriksaan -->
+  <div class="accordion-item">
+    <h2 class="accordion-header" id="headingPemeriksaan">
+      <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapsePemeriksaan" aria-expanded="true" aria-controls="collapsePemeriksaan">
+        Pemeriksaan
+      </button>
+    </h2>
+    <div id="collapsePemeriksaan" class="accordion-collapse collapse show" aria-labelledby="headingPemeriksaan" data-bs-parent="#divB">
+      <div class="accordion-body">
+        Ini adalah isi dummy untuk bagian Pemeriksaan. Contoh: Data pemeriksaan awal telah dilakukan dengan lengkap.
+      </div>
+    </div>
+  </div>
+
+  <!-- Analisa -->
+  <div class="accordion-item">
+    <h2 class="accordion-header" id="headingAnalisa">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseAnalisa" aria-expanded="false" aria-controls="collapseAnalisa">
+        Analisa
+      </button>
+    </h2>
+    <div id="collapseAnalisa" class="accordion-collapse collapse" aria-labelledby="headingAnalisa" data-bs-parent="#divB">
+      <div class="accordion-body">
+        Ini adalah isi dummy untuk bagian Analisa. Contoh: Analisa menunjukkan adanya peningkatan getaran di mesin.
+      </div>
+    </div>
+  </div>
+
+  <!-- Rekomendasi -->
+  <div class="accordion-item">
+    <h2 class="accordion-header" id="headingRekomendasi">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseRekomendasi" aria-expanded="false" aria-controls="collapseRekomendasi">
+        Rekomendasi
+      </button>
+    </h2>
+    <div id="collapseRekomendasi" class="accordion-collapse collapse" aria-labelledby="headingRekomendasi" data-bs-parent="#divB">
+      <div class="accordion-body">
+        Ini adalah isi dummy untuk bagian Rekomendasi. Contoh: Disarankan untuk melakukan perawatan segera pada bearing.
+      </div>
+    </div>
+  </div>
+
+  <!-- Tindak Lanjut -->
+  <div class="accordion-item">
+    <h2 class="accordion-header" id="headingTindakLanjut">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTindakLanjut" aria-expanded="false" aria-controls="collapseTindakLanjut">
+        Tindak Lanjut
+      </button>
+    </h2>
+    <div id="collapseTindakLanjut" class="accordion-collapse collapse" aria-labelledby="headingTindakLanjut" data-bs-parent="#divB">
+      <div class="accordion-body">
+        Ini adalah isi dummy untuk bagian Tindak Lanjut. Contoh: Jadwalkan perbaikan dalam 2 minggu ke depan.
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+        </div>
+      </div>
+
+      <!-- KANAN: Textarea -->
+      <div class="col-md-6">
+        <h5>Hasil Pemeriksaan</h5>
+        <form id="hasilForm">
+          <div class="mb-3">
+            <label for="pemeriksaan" class="form-label">Pemeriksaan</label>
+            <textarea id="pemeriksaan" name="pemeriksaan" class="form-control" rows="3" placeholder="Masukkan hasil pemeriksaan..."></textarea>
+          </div>
+          <div class="mb-3">
+            <label for="analisa" class="form-label">Analisa</label>
+            <textarea id="analisa" name="analisa" class="form-control" rows="3" placeholder="Masukkan analisa..."></textarea>
+          </div>
+          <div class="mb-3">
+            <label for="rekomendasi" class="form-label">Rekomendasi</label>
+            <textarea id="rekomendasi" name="rekomendasi" class="form-control" rows="3" placeholder="Masukkan rekomendasi..."></textarea>
+          </div>
+          <div class="mb-3">
+            <label for="tindaklanjut" class="form-label">Tindak Lanjut</label>
+            <textarea id="tindaklanjut" name="tindaklanjut" class="form-control" rows="3" placeholder="Masukkan tindak lanjut..."></textarea>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+
+
+
+  
+
+
+
+
+
+<!-- Script -->
+<script>
+function showDiv(target) {
+  // Tampilkan div yang dipilih
+  document.getElementById('divA').style.display = target === 'divA' ? 'block' : 'none';
+  document.getElementById('divB').style.display = target === 'divB' ? 'block' : 'none';
+}
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    document.querySelector('.view-btn').addEventListener('click', function () {
+      document.getElementById('detailSection2').style.display = 'none';
+      document.getElementById('detailSection').style.display = 'flex'; // atau 'block' sesuai kebutuhan layout
+    });
+  });
+</script>
+
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    document.querySelector('.view-btn2').addEventListener('click', function () {
+      document.getElementById('detailSection').style.display = 'none';
+      document.getElementById('detailSection2').style.display = 'flex'; // atau 'block' sesuai kebutuhan layout
+    });
+  });
+</script>
+
+
+
+
+<!-- JS SCRIPTS -->
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+
+<script>
+  $(document).ready(function () {
+    $('#equipmentTable, #dataPeralatanTable').DataTable();
+
+    // Event untuk tombol View di tab Condmon
+    $('.view-btn').on('click', function () {
+      var row = $(this).closest('tr');
+      var keterangan = row.data('keterangan');
+      var tasklist = row.data('tasklist');
+      var measurement = row.data('measurement');
+
+      $('#keteranganContent').text(keterangan);
+      $('#tasklistContent').text(tasklist);
+      $('#measurementContent').text(measurement);
+
+      $('#detailSection').show();
+      $('#peralatanDetail').hide(); // Hide peralatan detail jika sebelumnya tampil
+    });
+
+    // Event untuk tombol View di tab Data Peralatan
+    $('.view-peralatan').on('click', function () {
+      var row = $(this).closest('tr');
+      var keterangan = row.data('keterangan');
+      var tasklist = row.data('tasklist');
+      var measurement = row.data('measurement');
+      var tag = row.find('td:eq(0)').text();
+      var area = row.find('td:eq(1)').text();
+
+      $('#keteranganContent').text(keterangan);
+      $('#tasklistContent').text(tasklist);
+      $('#measurementContent').text(measurement);
+
+      $('#detailNama').html('<strong>Tag Number:</strong> ' + tag);
+      $('#detailLokasi').html('<strong>Lokasi:</strong> ' + area);
+
+      $('#detailSection').show();
+      $('#peralatanDetail').show(); // Show bagian detail peralatan
+    });
+  });
+</script>
+
+
+
+</body>
+</html>

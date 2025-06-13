@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Grafik Alert & Danger</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background: #f4f4f4;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .header h2 {
+      margin: 0;
+    }
+
+    .controls {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .container {
+      display: flex;
+      width: 100%;
+      gap: 20px;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+
+    .chart-container {
+      flex: 2;
+      background: #fff;
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+    }
+
+    .status-cards {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .card-group {
+      background: #fafafa;
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+    }
+
+    .card-group h3 {
+      margin-bottom: 20px;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      text-align: center;
+    }
+
+    .card {
+      display: flex;
+      align-items: center;
+      border-radius: 8px;
+      padding: 15px;
+      margin-bottom: 15px;
+    }
+
+    .card i {
+      margin-right: 15px;
+      font-size: 1.5em;
+    }
+
+    .card-content {
+      flex: 1;
+    }
+
+    .card h4 {
+      margin: 0 0 5px;
+      font-size: 14px;
+    }
+
+    .card-value {
+      font-weight: 700;
+      font-size: 20px;
+    }
+
+    .up {
+      background: #e6f4ea;
+    }
+    .up .card-value {
+      color: green;
+    }
+
+    .down {
+      background: #fdecea;
+    }
+    .down .card-value {
+      color: red;
+    }
+
+    .neutral {
+      background: #f0f0f0;
+    }
+    .neutral .card-value {
+      color: #666;
+    }
+
+    .new {
+      background: #e6f7ff;
+    }
+    .new .card-value {
+      color: #1890ff;
+    }
+
+    .gone {
+      background: #fff2f0;
+    }
+    .gone .card-value {
+      color: #f5222d;
+    }
+
+    .missing {
+      background: #fff7e6;
+    }
+    .missing .card-value {
+      color: #fa8c16;
+    }
+  </style>
+  
+</head>
+<body>
+
+<div class="header">
+  <h2>Statistik Alert & Danger</h2>
+  <div class="controls">
+    <label for="timeFrame">Tampilkan berdasarkan:</label>
+    <select id="timeFrame" class="form-control">
+      <option value="daily">Harian</option>
+      <option value="weekly" selected>Mingguan</option>
+      <option value="monthly">Bulanan</option>
+    </select>
+  </div>
+</div>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+
+<div class="container">
+  <!-- Left Side - Chart -->
+  <div class="chart-container">
+    <canvas id="chart" height="100"></canvas>
+      <canvas id="myBarChart"  height="100"></canvas>
+  </div>
+
+  
+ <!-- Right Side - Status Cards -->
+<div class="status-cards">
+  <!-- Alert Group -->
+  <div class="tile-group">
+    <h3>Alert</h3>
+    <div id="alertCards" class="tile-container">
+      <!-- Tile Naik -->
+      <div id="alertUpCard" class="tile up" style="display: none;">
+        <div class="tile-icon">
+          <i class="fa-solid fa-arrow-up"></i>
+        </div>
+        <div class="tile-content">
+          <div class="tile-title">Kenaikan</div>
+          <div id="alertUp" class="tile-value">0</div>
+        </div>
+      </div>
+      
+      <!-- Tile Turun -->
+      <div id="alertDownCard" class="tile down" style="display: none;">
+        <div class="tile-icon">
+          <i class="fa-solid fa-arrow-down"></i>
+        </div>
+        <div class="tile-content">
+          <div class="tile-title">Penurunan</div>
+          <div id="alertDown" class="tile-value">0</div>
+        </div>
+      </div>
+      
+      <!-- Tile Total Tag -->
+      <div class="tile neutral">
+        <div class="tile-icon">
+          <i class="fa-solid fa-tag"></i>
+        </div>
+        <div class="tile-content">
+          <div class="tile-title">Total Tag</div>
+          <div id="alertTotal" class="tile-value">0</div>
+        </div>
+      </div>
+      
+      <!-- Tile Tag Baru -->
+      <div id="alertNewCard" class="tile new" style="display: none;">
+        <div class="tile-icon">
+          <i class="fa-solid fa-plus"></i>
+        </div>
+        <div class="tile-content">
+          <div class="tile-title">Tag Baru Periode ini</div>
+          <div id="alertNew" class="tile-value">0</div>
+        </div>
+      </div>
+      
+      <!-- Tile Tag Missing -->
+      <div id="alertMissingCard" class="tile missing">
+        <div class="tile-icon">
+          <i class="fa-solid fa-question"></i>
+        </div>
+        <div class="tile-content">
+          <div class="tile-title">Tag Hilang Periode Lalu</div>
+          <div id="alertMissing" class="tile-value">0</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Danger Group -->
+  <div class="tile-group">
+    <h3>Danger</h3>
+    <div id="dangerCards" class="tile-container">
+      <!-- Tile Naik -->
+      <div id="dangerUpCard" class="tile up" style="display: none;">
+        <div class="tile-icon">
+          <i class="fa-solid fa-arrow-up"></i>
+        </div>
+        <div class="tile-content">
+          <div class="tile-title">Kenaikan</div>
+          <div id="dangerUp" class="tile-value">0</div>
+        </div>
+      </div>
+      
+      <!-- Tile Turun -->
+      <div id="dangerDownCard" class="tile down" style="display: none;">
+        <div class="tile-icon">
+          <i class="fa-solid fa-arrow-down"></i>
+        </div>
+        <div class="tile-content">
+          <div class="tile-title">Penurunan</div>
+          <div id="dangerDown" class="tile-value">0</div>
+        </div>
+      </div>
+      
+      <!-- Tile Total Tag -->
+      <div class="tile neutral">
+        <div class="tile-icon">
+          <i class="fa-solid fa-tag"></i>
+        </div>
+        <div class="tile-content">
+          <div class="tile-title">Total Tag</div>
+          <div id="dangerTotal" class="tile-value">0</div>
+        </div>
+      </div>
+      
+      <!-- Tile Tag Baru -->
+      <div id="dangerNewCard" class="tile new" style="display: none;">
+        <div class="tile-icon">
+          <i class="fa-solid fa-plus"></i>
+        </div>
+        <div class="tile-content">
+          <div class="tile-title">Tag Baru Periode ini</div>
+          <div id="dangerNew" class="tile-value">0</div>
+        </div>
+      </div>
+      
+      <!-- Tile Tag Missing -->
+      <div id="dangerMissingCard" class="tile missing">
+        <div class="tile-icon">
+          <i class="fa-solid fa-question"></i>
+        </div>
+        <div class="tile-content">
+          <div class="tile-title">Tag Hilang Periode Lalu</div>
+          <div id="dangerMissing" class="tile-value">0</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+<script>
+        // Data contoh
+        const data = {
+            labels: ['2023-10-01', '2023-10-02', '2023-10-03', '2023-10-04', '2023-10-05'],
+            datasets: [{
+                label: 'Jumlah Actual',
+                data: [120, 190, 150, 200, 170],
+                backgroundColor: 'rgba(54, 162, 235, 0.7)',
+                borderColor: 'rgba(54, 162, 235, 1)',
+                borderWidth: 1
+            }]
+        };
+
+        // Konfigurasi chart
+        const config = {
+            type: 'bar',
+            data: data,
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                    title: {
+                        display: true,
+                        text: 'Jumlah Actual per Tanggal'
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Jumlah'
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Tanggal'
+                        }
+                    }
+                }
+            }
+        };
+
+        // Membuat chart
+        const ctx2 = document.getElementById('myBarChart').getContext('2d');
+        const myBarChart = new Chart(ctx2, config);
+    </script>
+
+<style>
+.tile-group {
+  background: #fafafa;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+  margin-bottom: 20px;
+}
+
+.tile-group h3 {
+  margin-bottom: 15px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  text-align: center;
+}
+
+.tile-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 15px;
+}
+
+.tile {
+  border-radius: 8px;
+  padding: 15px;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.tile-icon {
+  font-size: 24px;
+  margin-bottom: 8px;
+}
+
+.tile-title {
+  font-size: 12px;
+  margin-bottom: 5px;
+  font-weight: 600;
+}
+
+.tile-value {
+  font-weight: 700;
+  font-size: 20px;
+}
+
+/* Tile Color Styles */
+.tile.up {
+  background: #e6f4ea;
+}
+.tile.up .tile-value {
+  color: green;
+}
+
+.tile.down {
+  background: #fdecea;
+}
+.tile.down .tile-value {
+  color: red;
+}
+
+.tile.neutral {
+  background: #f0f0f0;
+}
+.tile.neutral .tile-value {
+  color: #666;
+}
+
+.tile.new {
+  background: #e6f7ff;
+}
+.tile.new .tile-value {
+  color: #1890ff;
+}
+
+.tile.missing {
+  background: #fff7e6;
+}
+.tile.missing .tile-value {
+  color: #fa8c16;
+}
+</style>
+
+<script>
+// Data simulasi untuk Alert dan Danger
+const rawData = {
+  daily: {
+    labels: ["12/1/2025", "12/2/2025", "12/3/2025", "12/4/2025"],
+    alert: [4, 4, 3, 4], // Jumlah alert per hari
+    danger: [2, 3, 2, 4], // Jumlah danger per hari
+    alertTags: [
+      ["A", "B", "C", "D"], // 12/1/2025
+      ["A", "B", "C", "D"], // 12/2/2025
+      ["K", "L", "A"],      // 12/3/2025 (B, C, D hilang)
+      ["K", "L", "M", "N"]  // 12/4/2025 (A hilang, M, N baru)
+    ],
+    dangerTags: [
+      ["X", "Y"],           // 12/1/2025
+      ["X", "Y", "Z"],      // 12/2/2025 (Z baru)
+      ["X", "Z"],           // 12/3/2025 (Y hilang)
+      ["X", "Z", "W", "V"]  // 12/4/2025 (W, V baru)
+    ]
+  },
+  weekly: {
+    labels: ["Minggu 1", "Minggu 2"],
+    alert: [4, 4], // Jumlah alert per minggu
+    danger: [3, 4], // Jumlah danger per minggu
+    alertTags: [
+      ["A", "B", "C", "D"], // Minggu 1
+      ["K", "L", "M", "N"]   // Minggu 2 (semua tag berbeda)
+    ],
+    dangerTags: [
+      ["X", "Y", "Z"],       // Minggu 1
+      ["X", "Z", "W", "V"]   // Minggu 2 (Y hilang, W, V baru)
+    ]
+  },
+  monthly: {
+    labels: ["Desember 2025"],
+    alert: [8], // Jumlah alert bulanan
+    danger: [4], // Jumlah danger bulanan
+    alertTags: [
+      ["A", "B", "C", "D", "K", "L", "M", "N"] // Gabungan semua tag alert
+    ],
+    dangerTags: [
+      ["X", "Y", "Z", "W", "V"] // Gabungan semua tag danger
+    ]
+  }
+};
+
+const ctx = document.getElementById('chart').getContext('2d');
+let chart = new Chart(ctx, {
+  type: 'line',
+  data: {},
+  options: {
+    responsive: true,
+    tension: 0,
+    scales: {
+      y: {
+        beginAtZero: true
+      }
+    }
+  }
+});
+
+document.getElementById('timeFrame').addEventListener('change', updateChart);
+
+function updateChart() {
+  const timeFrame = document.getElementById('timeFrame').value;
+  const data = rawData[timeFrame];
+  const lastIndex = data.labels.length - 1;
+  const prevIndex = lastIndex - 1 >= 0 ? lastIndex - 1 : 0;
+
+  // Update chart data
+  chart.data = {
+    labels: data.labels,
+    datasets: [
+      {
+        label: 'Alert',
+        backgroundColor: 'orange',
+        borderColor: 'orange',
+        fill: false,
+        data: data.alert
+      },
+      {
+        label: 'Danger',
+        backgroundColor: 'red',
+        borderColor: 'red',
+        fill: false,
+        data: data.danger
+      }
+    ]
+  };
+  chart.update();
+
+  // Update Alert cards
+  updateAlertCards(data, lastIndex, prevIndex);
+  
+  // Update Danger cards
+  updateDangerCards(data, lastIndex, prevIndex);
+}
+
+function updateAlertCards(data, lastIndex, prevIndex) {
+  const alertDiff = data.alert[lastIndex] - data.alert[prevIndex];
+  const alertTotal = data.alert[lastIndex];
+  
+  // Update total tag
+  document.getElementById('alertTotal').textContent = alertTotal;
+  
+  // Update naik/turun cards
+  const alertUpCard = document.getElementById('alertUpCard');
+  const alertDownCard = document.getElementById('alertDownCard');
+  
+  if (alertDiff > 0) {
+    alertUpCard.style.display = 'flex';
+    document.getElementById('alertUp').textContent = `+${alertDiff}`;
+    alertDownCard.style.display = 'none';
+  } else if (alertDiff < 0) {
+    alertUpCard.style.display = 'none';
+    alertDownCard.style.display = 'flex';
+    document.getElementById('alertDown').textContent = alertDiff;
+  } else {
+    alertUpCard.style.display = 'none';
+    alertDownCard.style.display = 'none';
+  }
+  
+  // Update tag changes
+  updateTagChanges('alert', data, lastIndex, prevIndex);
+}
+
+function updateDangerCards(data, lastIndex, prevIndex) {
+  const dangerDiff = data.danger[lastIndex] - data.danger[prevIndex];
+  const dangerTotal = data.danger[lastIndex];
+  
+  // Update total tag
+  document.getElementById('dangerTotal').textContent = dangerTotal;
+  
+  // Update naik/turun cards
+  const dangerUpCard = document.getElementById('dangerUpCard');
+  const dangerDownCard = document.getElementById('dangerDownCard');
+  
+  if (dangerDiff > 0) {
+    dangerUpCard.style.display = 'flex';
+    document.getElementById('dangerUp').textContent = `+${dangerDiff}`;
+    dangerDownCard.style.display = 'none';
+  } else if (dangerDiff < 0) {
+    dangerUpCard.style.display = 'none';
+    dangerDownCard.style.display = 'flex';
+    document.getElementById('dangerDown').textContent = dangerDiff;
+  } else {
+    dangerUpCard.style.display = 'none';
+    dangerDownCard.style.display = 'none';
+  }
+  
+  // Update tag changes
+  updateTagChanges('danger', data, lastIndex, prevIndex);
+}
+
+function updateTagChanges(type, data, lastIndex, prevIndex) {
+  const currentTags = new Set(data[`${type}Tags`][lastIndex]);
+  const prevTags = new Set(data[`${type}Tags`][prevIndex]);
+  
+  // Hitung tag baru (ada di current tapi tidak ada di previous)
+  let newTags = 0;
+  // Hitung tag hilang (ada di previous tapi tidak ada di current)
+  let goneTags = 0;
+  // Hitung tag yang ada di previous week tapi tidak ada di current week
+  let missingTags = 0;
+  
+  currentTags.forEach(tag => {
+    if (!prevTags.has(tag)) newTags++;
+  });
+  
+  prevTags.forEach(tag => {
+    if (!currentTags.has(tag)) {
+      goneTags++;
+      missingTags++;
+    }
+  });
+  
+  // Update UI untuk tag baru
+  const newCard = document.getElementById(`${type}NewCard`);
+  const newValue = document.getElementById(`${type}New`);
+  if (newTags > 0) {
+    newCard.style.display = 'flex';
+    newValue.textContent = newTags;
+  } else {
+    newCard.style.display = 'none';
+  }
+  
+  // Update UI untuk tag hilang
+  const goneValue = document.getElementById(`${type}Gone`);
+  goneValue.textContent = goneTags;
+  
+  // Update UI untuk tag missing
+  const missingValue = document.getElementById(`${type}Missing`);
+  missingValue.textContent = missingTags;
+}
+
+// Initialize
+updateChart();
+</script>
+
+
+
+</div>
+
+<style>
+        #taskTable {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-family: Arial, sans-serif;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        #taskTable th, #taskTable td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #dddddd;
+        }
+        
+        #taskTable th {
+            background-color: #4CAF50;
+            color: white;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+        
+        #taskTable tr:nth-child(even) {
+            background-color: #f3f3f3;
+        }
+        
+        #taskTable tr:hover {
+            background-color: #f1f1f1;
+        }
+        
+        #taskTable tr:last-child td {
+            border-bottom: 2px solid #4CAF50;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+    </style>
+
+<br>
+    <table  id="taskTable">
+      <thead>
+        <tr>
+          <th>Maintenance Plan</th>
+          <th>Task List</th>
+          <th>Tag No</th>
+          <th>ECR</th>
+          <th>Area</th>
+          <th>Unit</th>
+          <th>Plan</th>
+          <th>Actual</th>
+
+          <th>Status Equipment</th>
+    
+         
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>CM-RTN-CD3</td>
+          <td>CM-PUMP-BB</td>
+          <td>CD3-P-002/00</td>
+          <td>M</td>
+          <td>CDGP</td>
+          <td>CDU-III</td>
+          <td>1/5/2025</td>
+          <td>1/5/2025</td>
+
+          <td>Normal</td>
+
+
+        </tr>
+        <tr>
+          <td>CM-RTN-CD3</td>
+          <td>CM-PUMP-BB</td>
+          <td>CD3-P-003/00</td>
+          <td>M</td>
+          <td>CDGP</td>
+          <td>CDU-III</td>
+          <td>1/5/2025</td>
+          <td>2/5/2025</td>
+   
+          <td>Alert</td>
+
+
+        </tr>
+        </tbody>
+        </table>
+</body>
+</html>

@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Measurement Point Form</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+
+
+
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+    }
+
+    .sidebar {
+      width: 250px;
+      height: 100vh;
+      background: linear-gradient(to bottom, #0066ff, #00ccff);
+      color: white;
+      padding: 20px;
+      flex-shrink: 0;
+    }
+
+    .sidebar a {
+      color: white !important;
+    }
+
+    .sidebar .nav-link.active {
+      background-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .main-content {
+      flex-grow: 1;
+      overflow-y: auto;
+      padding: 20px;
+      background-color: #f8f9fa;
+    }
+
+    th, td {
+      text-align: center;
+    }
+  </style>
+
+   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+  <style>
+    .card-modern {
+      border-radius: 15px;
+      transition: transform 0.2s ease-in-out;
+    }
+    .card-modern:hover {
+      transform: translateY(-5px);
+    }
+    .card-icon {
+      font-size: 3rem;
+      color: #0d6efd;
+    }
+  </style>
+
+  
+</head>
+<body>
+
+  <!-- Sidebar -->
+  <div class="sidebar d-flex flex-column">
+    <a href="/" class="d-flex align-items-center mb-3 text-decoration-none">
+      <span class="fs-4"><b>CONDITION MONITORING</b></span>
+    </a>
+    <hr>
+    <ul class="nav nav-pills flex-column mb-auto">
+
+           <li><a href="home.html" class="nav-link"><i class="bi bi-gear me-2"></i> Home</a></li>
+      <li><a href="list_eksekusi.html" class="nav-link"><i class="bi bi-gear me-2"></i> Condtion monitorng</a></li>
+      <li><a href="list_adhoc.html" class="nav-link"><i class="bi bi-gear me-2"></i> Request Condmon</a></li>
+      <li><a href="tasklist.html" class="nav-link"><i class="bi bi-table me-2"></i> Task List</a></li>
+      <li><a href="list_scheduling.html" class="nav-link"><i class="bi bi-ui-checks-grid me-2"></i> Condmon Plan</a></li>
+      <li><a href="list_rekomendasi.html" class="nav-link"><i class="bi bi-gear me-2"></i> Recomendation</a></li>
+
+
+       <li>
+    <a class="nav-link d-flex justify-content-between align-items-center" data-bs-toggle="collapse" href="#masterSubmenu" role="button" aria-expanded="false" aria-controls="masterSubmenu">
+      <span><i class="bi bi-house-door-fill me-2"></i> Master</span>
+      <i class="bi bi-chevron-down"></i>
+    </a>
+    <div class="collapse ps-3" id="masterSubmenu">
+      <ul class="nav flex-column">
+        <li class="nav-item">
+          <a href="create_measurement_point.html" class="nav-link">
+            <i class="bi bi-circle me-2"></i> Meas. Point
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="Create_anomali.html" class="nav-link">
+            <i class="bi bi-circle me-2"></i> Anomali
+          </a>
+        </li>
+      </ul>
+    </div>
+  </li>
+
+
+    </ul>
+    <hr>
+    <div class="dropdown mt-auto">
+      <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" data-toggle="dropdown">
+        <i class="bi bi-person-circle me-2"></i><strong>User</strong>
+      </a>
+      <ul class="dropdown-menu text-small shadow">
+        <li><a class="dropdown-item" href="#">Profile</a></li>
+        <li><a class="dropdown-item" href="#">Logout</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <div class="container mt-5">
+      <h4>List Dokumen</h4>
+     
+       <div class="container">
+    <div id="mainCards" class="row g-4">
+
+       
+        
+    <div class="mb-3 d-flex justify-content-between align-items-center">
+      <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addDocModal">Tambah Dokumen</button>
+
+    </div>
+
+
+
+    <form class="row row-cols-1 row-cols-md-auto g-2 align-items-end mb-4">
+  <!-- Dropdown Area -->
+  <div class="col">
+    <label for="areaSelect" class="form-label">Area</label>
+    <select class="form-select" id="areaSelect">
+      <option selected disabled>Pilih Area</option>
+      <option value="Area1">Area 1</option>
+      <option value="Area2">Area 2</option>
+      <option value="Area3">Area 3</option>
+    </select>
+  </div>
+
+  <!-- Dropdown Unit -->
+  <div class="col">
+    <label for="unitSelect" class="form-label">Unit</label>
+    <select class="form-select" id="unitSelect">
+      <option selected disabled>Pilih Unit</option>
+      <option value="UnitA">Unit A</option>
+      <option value="UnitB">Unit B</option>
+      <option value="UnitC">Unit C</option>
+    </select>
+  </div>
+
+  <!-- Dropdown Tag Number -->
+  <div class="col">
+    <label for="tagSelect" class="form-label">Tag Number</label>
+    <select class="form-select" id="tagSelect">
+      <option selected disabled>Pilih Tag Number</option>
+      <option value="TAG001">TAG001</option>
+      <option value="TAG002">TAG002</option>
+      <option value="TAG003">TAG003</option>
+    </select>
+  </div>
+
+  <!-- Tombol Search -->
+  <div class="col">
+    <button type="submit" class="btn btn-primary w-100">
+      <i class="bi bi-search"></i> Cari
+    </button>
+  </div>
+</form>
+
+
+
+    <!-- Tabs Navigation -->
+<ul class="nav nav-tabs mb-4" id="documentTabs" role="tablist">
+  <li class="nav-item" role="presentation">
+    <button class="nav-link active" id="drawing-tab" data-bs-toggle="tab" data-bs-target="#drawing" type="button" role="tab">Drawing & Datasheet</button>
+  </li>
+  <li class="nav-item" role="presentation">
+    <button class="nav-link" id="memo-tab" data-bs-toggle="tab" data-bs-target="#memo" type="button" role="tab">Rekomendasi</button>
+  </li>
+  <li class="nav-item" role="presentation">
+    <button class="nav-link" id="quotation-tab" data-bs-toggle="tab" data-bs-target="#quotation" type="button" role="tab">Quotation/Kimap/PR/PO</button>
+  </li>
+  <li class="nav-item" role="presentation">
+    <button class="nav-link" id="kajian-tab" data-bs-toggle="tab" data-bs-target="#kajian" type="button" role="tab">Kajian/Laporan/Logbook</button>
+  </li>
+  <li class="nav-item" role="presentation">
+    <button class="nav-link" id="dokumentasi-tab" data-bs-toggle="tab" data-bs-target="#dokumentasi" type="button" role="tab">Dokumentasi</button>
+  </li>
+  <li class="nav-item" role="presentation">
+    <button class="nav-link" id="qpqcr-tab" data-bs-toggle="tab" data-bs-target="#qpqcr" type="button" role="tab">QP-QCR</button>
+  </li>
+
+    <li class="nav-item" role="presentation">
+    <button class="nav-link" id="qpqcr-tab" data-bs-toggle="tab" data-bs-target="#qpqcr" type="button" role="tab">Condmon</button>
+  </li>
+
+    <li class="nav-item" role="presentation">
+    <button class="nav-link" id="qpqcr-tab" data-bs-toggle="tab" data-bs-target="#qpqcr" type="button" role="tab">PM</button>
+  </li>
+
+  
+</ul>
+
+
+
+    <table id="taskTable" class="display table table-striped" style="width:100%">
+      <thead>
+        <tr>
+          <th>Judul</th>
+          <th>Kategori</th>
+          <th>Tag Number</th>
+          <th>Nama File</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Data akan diisi JS -->
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Modal Add Dokumen -->
+  <div
+    class="modal fade"
+    id="addDocModal"
+    tabindex="-1"
+    aria-labelledby="addDocModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog">
+      <form id="addDocForm" class="modal-content" enctype="multipart/form-data">
+        <div class="modal-header">
+          <h5 class="modal-title" id="addDocModalLabel">Tambah Dokumen Baru</h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label for="docTitle" class="form-label">Judul Dokumen</label>
+            <input type="text" id="docTitle" class="form-control" required />
+          </div>
+          <div class="mb-3">
+            <label for="docCategory" class="form-label">Kategori</label>
+          <select id="docCategory" class="form-select" required>
+  <option value="" disabled selected>Pilih Kategori</option>
+  <option value="Drawing dan Datasheet">Drawing dan Datasheet</option>
+  <option value="Memo">Rekomendasi</option>
+  <option value="Quotation/Kimap/PR/PO">Quotation/Kimap/PR/PO</option>
+  <option value="Kajian/Laporan/Logbook">Kajian/Laporan/Logbook</option>
+  <option value="Dokumentasi">Dokumentasi</option>
+  <option value="QP-QCR">QP-QCR</option>
+</select>
+
+          </div>
+          <div class="mb-3">
+            <label for="tagNumber" class="form-label">Tag Number</label>
+            <input type="text" id="tagNumber" class="form-control" placeholder="Masukkan Tag Number" required />
+          </div>
+          <div class="mb-3">
+            <label for="docFile" class="form-label">Pilih File Dokumen</label>
+            <input type="file" id="docFile" class="form-control" required />
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary">Simpan Dokumen</button>
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+          >
+            Batal
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+     
+    </div>
+  </div>
+
+     
+    </div>
+  </div>
+
+  <!-- JS Scripts -->
+  <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+
+  <script>
+    $(document).ready(function () {
+      const dataTable = $('#taskTable').DataTable();
+
+      let count = $('#taskTable tbody tr').length;
+
+      $('#measurementForm').on('submit', function(e) {
+        e.preventDefault();
+        const point = $('#measurementPoint').val().trim();
+
+        if (point !== '') {
+          count++;
+          dataTable.row.add([
+            count,
+            point
+          ]).draw();
+
+          this.reset();
+        }
+      });
+    });
+  </script>
+</body>
+</html>
