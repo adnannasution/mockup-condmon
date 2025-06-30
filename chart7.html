@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Grafik Alert & Danger</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -156,10 +155,8 @@
 <div class="container">
   <!-- Left Side - Chart -->
   <div class="chart-container">
-    <canvas id="chart" height="100"></canvas>
-      <canvas id="myBarChart"  height="100"></canvas>
+    <canvas id="chart" height="200"></canvas>
   </div>
-
   
  <!-- Right Side - Status Cards -->
 <div class="status-cards">
@@ -285,61 +282,6 @@
     </div>
   </div>
 </div>
-
-
-
-
-
-<script>
-        // Data contoh
-        const data = {
-            labels: ['2023-10-01', '2023-10-02', '2023-10-03', '2023-10-04', '2023-10-05'],
-            datasets: [{
-                label: 'Jumlah Actual',
-                data: [120, 190, 150, 200, 170],
-                backgroundColor: 'rgba(54, 162, 235, 0.7)',
-                borderColor: 'rgba(54, 162, 235, 1)',
-                borderWidth: 1
-            }]
-        };
-
-        // Konfigurasi chart
-        const config = {
-            type: 'bar',
-            data: data,
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: {
-                        position: 'top',
-                    },
-                    title: {
-                        display: true,
-                        text: 'Jumlah Actual per Tanggal'
-                    }
-                },
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        title: {
-                            display: true,
-                            text: 'Jumlah'
-                        }
-                    },
-                    x: {
-                        title: {
-                            display: true,
-                            text: 'Tanggal'
-                        }
-                    }
-                }
-            }
-        };
-
-        // Membuat chart
-        const ctx2 = document.getElementById('myBarChart').getContext('2d');
-        const myBarChart = new Chart(ctx2, config);
-    </script>
 
 <style>
 .tile-group {
@@ -621,106 +563,5 @@ function updateTagChanges(type, data, lastIndex, prevIndex) {
 updateChart();
 </script>
 
-
-
-</div>
-
-<style>
-        #taskTable {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 20px 0;
-            font-family: Arial, sans-serif;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-        }
-        
-        #taskTable th, #taskTable td {
-            padding: 12px 15px;
-            text-align: left;
-            border-bottom: 1px solid #dddddd;
-        }
-        
-        #taskTable th {
-            background-color: #4CAF50;
-            color: white;
-            font-weight: bold;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-        }
-        
-        #taskTable tr:nth-child(even) {
-            background-color: #f3f3f3;
-        }
-        
-        #taskTable tr:hover {
-            background-color: #f1f1f1;
-        }
-        
-        #taskTable tr:last-child td {
-            border-bottom: 2px solid #4CAF50;
-        }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        
-        h1 {
-            color: #333;
-            text-align: center;
-            margin-bottom: 30px;
-        }
-    </style>
-
-<br>
-    <table  id="taskTable">
-      <thead>
-        <tr>
-          <th>Maintenance Plan</th>
-          <th>Task List</th>
-          <th>Tag No</th>
-          <th>ECR</th>
-          <th>Area</th>
-          <th>Unit</th>
-          <th>Plan</th>
-          <th>Actual</th>
-
-          <th>Status Equipment</th>
-    
-         
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>CM-RTN-CD3</td>
-          <td>CM-PUMP-BB</td>
-          <td>CD3-P-002/00</td>
-          <td>M</td>
-          <td>CDGP</td>
-          <td>CDU-III</td>
-          <td>1/5/2025</td>
-          <td>1/5/2025</td>
-
-          <td>Normal</td>
-
-
-        </tr>
-        <tr>
-          <td>CM-RTN-CD3</td>
-          <td>CM-PUMP-BB</td>
-          <td>CD3-P-003/00</td>
-          <td>M</td>
-          <td>CDGP</td>
-          <td>CDU-III</td>
-          <td>1/5/2025</td>
-          <td>2/5/2025</td>
-   
-          <td>Alert</td>
-
-
-        </tr>
-        </tbody>
-        </table>
 </body>
 </html>
