@@ -118,8 +118,164 @@
 <div class="mb-3">
   <label>Activity</label>
   <div id="activity-container"></div>
-  <button type="button" class="btn btn-sm btn-primary mt-2" onclick="addActivity()">+ Add Activity</button>
+  <button type="button" class="btn btn-sm btn-primary" onclick="addActivity()">+ Add Activity</button>
+  <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#inputModal">
+    + Add Component
+  </button>
 </div>
+
+
+
+
+
+
+<!-- Tombol untuk menampilkan modal -->
+
+
+  <!-- Modal Form -->
+  <div class="modal fade" id="inputModal" tabindex="-1" aria-labelledby="inputModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <form id="formInput">
+          <div class="modal-header">
+            <h5 class="modal-title" id="inputModalLabel">Input Data</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+          </div>
+          <div class="modal-body">
+            <div class="mb-3">
+              <label for="kimap" class="form-label">KIMAP</label>
+              <input type="text" class="form-control" id="kimap" required>
+            </div>
+            <div class="mb-3">
+              <label for="deskripsi" class="form-label">Deskripsi</label>
+              <textarea type="text" class="form-control" id="deskripsi" required></textarea>
+            </div>
+            <div class="mb-3">
+              <label for="quantity" class="form-label">Quantity</label>
+              <input type="number" class="form-control" id="quantity" required>
+            </div>
+            <div class="mb-3">
+              <label for="unit" class="form-label">Unit</label>
+              <input type="text" class="form-control" id="unit" required>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-success">Simpan</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tabel Hasil -->
+  <div class="mt-4">
+    <h5>Data Component</h5>
+    <table class="table table-bordered table-striped">
+      <thead>
+        <tr>
+          <th>KIMAP</th>
+          <th>Deskripsi</th>
+          <th>Quantity</th>
+          <th>Unit</th>
+          <th>Aksi</th>
+        </tr>
+      </thead>
+      <tbody id="dataTabel">
+        <!-- Data akan ditambahkan di sini -->
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<script>
+  const data = [];
+
+  function renderTable() {
+    const tbody = document.getElementById("dataTabel");
+    tbody.innerHTML = "";
+
+    data.forEach((item, index) => {
+      const row = document.createElement("tr");
+      row.innerHTML = `
+        <td>${item.kimap}</td>
+        <td>${item.deskripsi}</td>
+        <td>${item.quantity}</td>
+        <td>${item.unit}</td>
+        <td>
+          <button class="btn btn-sm btn-warning me-1" onclick="editData(${index})">Edit</button>
+          <button class="btn btn-sm btn-danger" onclick="hapusData(${index})">Hapus</button>
+        </td>
+      `;
+      tbody.appendChild(row);
+    });
+  }
+
+  document.getElementById("formInput").addEventListener("submit", function (e) {
+    e.preventDefault();
+
+    const kimap = document.getElementById("kimap").value;
+    const deskripsi = document.getElementById("deskripsi").value;
+    const quantity = document.getElementById("quantity").value;
+    const unit = document.getElementById("unit").value;
+    const editIndex = document.getElementById("editIndex").value;
+
+    if (editIndex === "") {
+      data.push({ kimap, deskripsi, quantity, unit });
+    } else {
+      data[editIndex] = { kimap, deskripsi, quantity, unit };
+    }
+
+    renderTable();
+    this.reset();
+    document.getElementById("editIndex").value = "";
+    const modal = bootstrap.Modal.getInstance(document.getElementById('inputModal'));
+    modal.hide();
+  });
+
+  function editData(index) {
+    const item = data[index];
+    document.getElementById("kimap").value = item.kimap;
+    document.getElementById("deskripsi").value = item.deskripsi;
+    document.getElementById("quantity").value = item.quantity;
+    document.getElementById("unit").value = item.unit;
+    document.getElementById("editIndex").value = index;
+
+    const modal = new bootstrap.Modal(document.getElementById('inputModal'));
+    modal.show();
+  }
+
+  function hapusData(index) {
+    if (confirm("Yakin ingin menghapus data ini?")) {
+      data.splice(index, 1);
+      renderTable();
+    }
+  }
+
+  // Optional: tambah 1 data awal
+data.push({
+  kimap: "10100123",
+  deskripsi: "Valve Gate 6 Inch, ANSI 150#",
+  quantity: 4,
+  unit: "Unit"
+});
+data.push({
+  kimap: "10100234",
+  deskripsi: "Heat Exchanger Tube Bundle",
+  quantity: 2,
+  unit: "Set"
+});
+data.push({
+  kimap: "10100345",
+  deskripsi: "Pressure Transmitter Yokogawa EJA130E",
+  quantity: 10,
+  unit: "Unit"
+});
+  renderTable();
+</script>
+
+
+
 
 
       <!-- Measurement Points -->
